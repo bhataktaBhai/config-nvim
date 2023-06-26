@@ -37,6 +37,8 @@ def greek(trigger):
 
 def math():
 	return vim.eval("vimtex#syntax#in_mathzone()") == "1"
+def text():
+	return not math()
 
 def text_after_cursor_matches(snip, string):
     (line, col) = snip.cursor
@@ -82,19 +84,12 @@ $0
 \\end{document}
 endsnippet
 
-
-##############
-## CALCULUS ##
-##############
-
-# context "math()"
-# snippet "\((.*)\)(d?dot)" "dot/ddot" riA
-# `!p snip.rv = f"\\{match.group(2)}{{{match.group(1)}}}"`
-# endsnippet
-
+###################
+##  DERIVATIVES  ##
+###################
 priority 20
 context "math()"
-snippet "([^ d.{},;\-+=<>()'?!$0-9[\]]+)(d?dot)" "post dot/ddot" riA
+snippet "([a-ce-zA-Z\\]+)(d?dot)" "post dot/ddot" rA
 \\`!p snip.rv = match.group(2) + "{" + match.group(1) + "}"`
 endsnippet
 
@@ -104,41 +99,14 @@ snippet "d?dot" "pre dot/ddot" rA
 \\`!p snip.rv = match.group(0)`{${1:${VISUAL}}}$0
 endsnippet
 
-priority 10
-
 context "math()"
-snippet "([a-zA-Z]+)hat" "hat" riA
-\\hat{`!p snip.rv = match.group(1)
-if snip.rv == "i" or snip.rv == "j":
-	snip.rv = "\\" + snip.rv`}
-endsnippet
-
-# snippet "([^\\ .{},;\-+=<>()'?!$0-9[\]]+)bar" "bar" riA
-context "math()"
-snippet "([a-zA-Z]+)bar" "bar" riA
-\\overline{`!p snip.rv = match.group(1)
-if snip.rv == "i" or snip.rv == "j":
-	snip.rv = "\\" + snip.rv`}
-endsnippet
-
-priority 0
-context "math()"
-snippet hat "hat" iA
-\\hat{${1:${VISUAL}}}$0
-endsnippet
-
-snippet bar "bar" iA
-\\overline{${1:${VISUAL}}}$0
-endsnippet
-
-context "math()"
-#snippet "(p?dv)" "[partial] derivative" riA
-#\\`!p snip.rv = match.group(1) + ("[" if t[1] else "")`${1:order}`!p snip.rv = "]" if t[1] else ""`{$2}{$3}$0
-
-snippet "([0-9]*)(p?dv)" "[partial] derivative" riA
+snippet "([0-9]*)(p?dv)" "[partial] derivative" rA
 \\`!p snip.rv = match.group(2) + (f'[{match.group(1)}]' if match.group(1) else '')`{$1}{$2}$0
 endsnippet
 
+#################
+##  INTEGRALS  ##
+#################
 context "math()"
 priority 10
 snippet dint "definite integral" iA
@@ -146,13 +114,13 @@ snippet dint "definite integral" iA
 endsnippet
 
 context "math()"
-snippet tint "indefinite integral" iA
+snippet tint "indefinite integral in t" iA
 \\int ${1:f(t)} \\dd ${2:t}$0
 endsnippet
 priority 0
 
 context "math()"
-snippet "int" "indefinite integral" riA
+snippet "int" "indefinite integral in x" rA
 \\int ${1:f(x)} \\dd ${2:x}$0
 endsnippet
 
@@ -161,23 +129,49 @@ snippet dx "dx" iA
 \\dd x
 endsnippet
 
-
-#############
-## PHYSICS ##
-#############
-
+###############
+##  ACCENTS  ##
+###############
+priority 20
 context "math()"
-snippet "SI" "SI" riA
-\\SI{${1:value}}{${2:units}}$0
-endsnippet
-
-context "not math()"
-snippet "SI" "SI outside math mode" r
-\\SI{${1:value}}{${2:units}}$0
+snippet "([a-zA-Z\\]+)hat" "post hat" rA
+\\hat{`!p snip.rv = match.group(1)
+if snip.rv == "i" or snip.rv == "j":
+	snip.rv = "\\" + snip.rv`}
 endsnippet
 
 context "math()"
-snippet unit "units" iA
+snippet "([a-zA-Z\\]+)bar" "post bar" rA
+\\overline{`!p snip.rv = match.group(1)
+if snip.rv == "i" or snip.rv == "j":
+	snip.rv = "\\" + snip.rv`}
+endsnippet
+
+priority 0
+context "math()"
+snippet hat "pre hat" iA
+\\hat{${1:${VISUAL}}}$0
+endsnippet
+
+snippet bar "pre bar" iA
+\\overline{${1:${VISUAL}}}$0
+endsnippet
+
+###############
+##  PHYSICS  ##
+###############
+context "math()"
+snippet SI "SI" iA
+\\SI{$1}{$2}$0
+endsnippet
+
+context "text()"
+snippet SI "SI outside math mode"
+\\SI{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet si "units" iA
 \\;\\si{$1}$0
 endsnippet
 
@@ -195,7 +189,6 @@ context "math()"
 snippet qe "electronic charge" i
 \\SI{1.602e-19}{C}
 endsnippet
-
 
 ###########
 ##  ENV  ##
@@ -218,13 +211,13 @@ snippet aln "begin{} / end{}" bA
 \\end{align*}
 endsnippet
 
-snippet proof "proof" bA
+snippet prf "proof" bA
 \\begin{proof}
 	${0:${VISUAL}}
 \\end{proof}
 endsnippet
 
-snippet problem "problem environment" bA
+snippet pbm "problem environment" bA
 \\begin{problem}
 	${0:${VISUAL}}
 \\end{problem}
@@ -236,7 +229,7 @@ snippet ans "answer environment" bA
 \\end{answer}
 endsnippet
 
-snippet "(rem)|(example)" "remark" rbA
+snippet "(rem)|(example)" "remarks" brA
 \\begin{`!p snip.rv = match.group(0)`}
 	${1:${VISUAL}}
 \\end{`!p snip.rv = match.group(0)`}
@@ -260,21 +253,21 @@ snippet facts "facts" bA
 \\end{facts}
 endsnippet
 
-snippet spoof "self proof" bA
-\\begin{proof}[Proof \textcolor{red!70!black}{(self)}]
+snippet spf "self proof" bA
+\\begin{proof}[Proof \textcolor{${1:self-proof}}{(self)}]
 	$0
 \\end{proof}
 endsnippet
 
-snippet enum "enumerate" bA
+snippet enm "enumerate" bA
 \\begin{enumerate}[label=${1:(\alph*)}]
-	\item ${0:${VISUAL}}
+	\\item ${0:${VISUAL}}
 \\end{enumerate}
 endsnippet
 
 snippet out "outline" bA
 \\begin{outline}
-	\1 ${0:${VISUAL}}
+	\\1 ${0:${VISUAL}}
 \\end{outline}
 endsnippet
 
@@ -292,15 +285,30 @@ snippet tz "tikzpicture" bA
 \\end{tikzpicture}
 endsnippet
 
-#################
-##  FORMATTING ##
-#################
+#####################
+## TEXT FORMATTING ##
+#####################
+context "text()"
 snippet bb "bold" A
 \\textbf{${1:${VISUAL}}}$0
 endsnippet
 
+context "text()"
 snippet ii "italics" iA
 \\textit{${1:${VISUAL}}}$0
+endsnippet
+
+context "text()"
+snippet ee "emphasis" A
+\\emph{${1:${VISUAL}}}$0
+endsnippet
+
+#####################
+## MATH FORMATTING ##
+#####################
+context "math()"
+snippet bb "mathbb" iA
+\\mathbb{$1}$0
 endsnippet
 
 context "math()"
@@ -324,6 +332,16 @@ snippet mrm "mathrm" iA
 endsnippet
 
 context "math()"
+snippet trm "textrm" iA
+\\textrm{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet tt "\\text{}" iA
+\\text{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
 snippet ^ "superscript" iA
 ^{${1:${VISUAL}}}$0
 endsnippet
@@ -334,7 +352,7 @@ _{${1:${VISUAL}}}$0
 endsnippet
 
 context "math()"
-snippet "([a-zA-Z])([0-9])" "numerical subscript" rA
+snippet "([a-zA-Z])([0-9])" "auto numerical subscript" rA
 `!p snip.rv = match.group(1) + "_{" + match.group(2) + "}"`$0
 endsnippet
 
@@ -343,13 +361,9 @@ snippet ~ "tilde" iA
 \\tilde{${1:${VISUAL}}}$0
 endsnippet
 
-snippet ee "emphasis" A
-\\emph{${1:${VISUAL}}}$0
-endsnippet
-
 priority 10
 context "math()"
-snippet "([^ .{},;\-+=<>()'?!$0-9[\]]+)bm" "post bm" riA
+snippet "([a-zA-Z\\]+)bm" "post bm" rA
 \\bm{`!p snip.rv = match.group(1)`}
 endsnippet
 
@@ -359,27 +373,9 @@ snippet bm "pre bm" iA
 \\bm{${1:${VISUAL}}}$0
 endsnippet
 
-context "math()"
-snippet tt "\\text{}" iA
-\\text{${1:${VISUAL}}}$0
-endsnippet
-
-context "math()"
-snippet bb "mathbb" iA
-\\mathbb{$1}$0
-endsnippet
-
-context "math()"
-snippet cal "mathcal" iA
-\\mathcal{$1}$0
-endsnippet
-
-
-###############
-##  MATH OP  ##
-###############
-
-#inequalities
+#############
+## MATH OP ##
+#############
 context "math()"
 snippet <= "\\leq" iA
 \\leq
@@ -398,16 +394,6 @@ endsnippet
 context "math()"
 snippet +- "plus-minus" iA
 \\pm
-endsnippet
-
-context "math()"
-snippet "(for)?all" "forall" riA
-\\forall
-endsnippet
-
-context "math()"
-snippet EE "exists" iA
-\\exists
 endsnippet
 
 context "math()"
@@ -439,24 +425,27 @@ snippet ... "dots" iA
 \\dots
 endsnippet
 
-
-####################
-##  TRIGONOMETRY  ##
-####################
-
+#####################
+##  ADD BACKSLASH  ##
+#####################
 context "math() and not text_inside_command(snip)"
-snippet "(((arc)?(sin)|(cos)|(tan))|(sec)|(csc)|(cot))" "trigonometric functions" riA
-\\`!p snip.rv = match.group(1)`
+snippet "((a?(sin)|(cos)|(tan))|(sec)|(csc)|(cot))h?" "trigonometric functions" rA
+\\`!p snip.rv = match.group(0)`
 endsnippet
 
 context "math()"
-snippet "((ln)|(log)|(lim)|(max)|(min)|(exp)|(det)|(sup)|(inf))" "log-like functions" riA
-\\`!p snip.rv = match.group(1)`
+snippet "(ln)|(log)|(exp)" "log-like functions" rA
+\\`!p snip.rv = match.group(0)`
 endsnippet
 
 context "math()"
-snippet "\b((in)|(to)|(cup)|(cap))" "log-like functions" riA
-\\`!p snip.rv = match.group(1)`
+snippet "(max)|(min)|(sup)|(inf)" "max-min/sup-inf/lim" rA
+\\`!p snip.rv = match.group(0)`
+endsnippet
+
+context "math()"
+snippet "(lim)|(to)" "limit stuff" rA
+\\`!p snip.rv = match.group(0)`
 endsnippet
 
 ##################
@@ -470,7 +459,7 @@ endsnippet
 priority 10
 context "math()"
 snippet ll( "large parentheses" iA
-\\left(${1:${VISUAL}}\\right)$0
+\\paren{${1:${VISUAL}}}$0
 endsnippet
 
 priority 0
@@ -482,7 +471,7 @@ endsnippet
 priority 10
 context "math()"
 snippet ll[ "large brackets" iA
-\\left[${1:${VISUAL}}\\right]$0
+\\brack{${1:${VISUAL}}}$0
 endsnippet
 
 priority 0
@@ -526,23 +515,29 @@ priority 0
 #############
 ##  GREEK  ##
 #############
-
 context "math() and not text_inside_command(snip)"
-snippet "[gG][a-zA-Z]" "greek alphabet" riA
+snippet "[gG][a-zA-Z]" "greek alphabet" rA
 \\`!p snip.rv = greek(match.group(0))`
 endsnippet
 
 context "math()"
-snippet "pi" "pi" riA
+snippet "pi" "pi" rA
 \\pi
+endsnippet
+
+##################
+##  SET THEORY  ##
+##################
+context "math()"
+snippet "\b(in)|(set)|(cup)|(cap)" "set stuff" rA
+\\`!p snip.rv = match.group(0)`
 endsnippet
 
 #############
 ##  LOGIC  ##
 #############
-
 context "math()"
-snippet not "negation" iA
+snippet "(neg)|(not)" "negation" rA
 \\neg
 endsnippet
 # \neg and \lnot are EXACTLY the same
@@ -566,7 +561,7 @@ endsnippet
 priority 0
 
 context "math()"
-snippet "((\\)?imp)|(=>)" "implies" riA
+snippet "(imp)|(=>)" "implies" rA
 \\implies`!p snip.rv = space(t[1])`$1
 endsnippet
 
@@ -583,26 +578,30 @@ snippet FF "false" iA
 \\false
 endsnippet
 
+context "math()"
+snippet all "forall" iA
+\\forall
+endsnippet
+
+context "math()"
+snippet ee "exists" iA
+\\exists
+endsnippet
+
 ############
 ##  MISC  ##
 ############
-
-context "not math()"
-snippet " ([b-zB-HJ-Z])([ ,.:?])" "one-letter variables" riA
+context "text()"
+snippet " ([b-zB-HJ-Z])([ ,.:?!])" "one-letter variables" rA
 `!p snip.rv = ' $' + match.group(1) + '$' + match.group(2)`
 endsnippet
 
-# context "not math()"
-# snippet " ([0-9]+)([ ,.:?])" "numbers" riA
-# `!p snip.rv = ' $' + match.group(1) + '$' + match.group(2)`
-# endsnippet
-
-context "not math()"
+context "text()"
 snippet $ "inline math" iA
 \$${1:${VISUAL}}\$$0
 endsnippet
 
-context "not math()"
+context "text()"
 snippet dm "display math" A
 \\[
 	${1:${VISUAL}}
