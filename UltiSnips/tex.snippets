@@ -1,0 +1,623 @@
+global !p
+greek_table = {
+	"a" : "alpha",
+	"b" : "beta",
+	"c" : "gamma",
+	"d" : "delta",
+	"e" : "varepsilon",
+	"f" : "phi",
+	"g" : "gamma",
+	"h" : "theta",
+	"i" : "iota",
+	"k" : "kappa",
+	"l" : "lambda",
+	"m" : "mu",
+	"n" : "nu",
+	"o" : "omega",
+	"p" : "rho",
+	"r" : "rho",
+	"s" : "sigma",
+	"t" : "tau",
+	"u" : "mu",
+	"w" : "psi",
+	"x" : "chi",
+	"z" : "zeta"
+}
+
+delimiters = "[ .{},;\-+=<>()'?!0-9[\]]"
+units = "(kg)|(Hz)|(mol)|[msKN]"
+
+def greek(trigger):
+	upper = not trigger.islower()
+	english = trigger[1]
+	if not upper:
+		return greek_table[english]
+	greek = greek_table[english.lower()]
+	return greek[0].upper() + greek[1:]
+
+def math():
+	return vim.eval("vimtex#syntax#in_mathzone()") == "1"
+
+def text_after_cursor_matches(snip, string):
+    (line, col) = snip.cursor
+    text_after_cursor = snip.buffer[line][col:]
+    return re.match(string, text_after_cursor)
+
+def text_inside_si(snip):
+	(line_no, col) = snip.cursor
+	line = snip.buffer[line_no]
+	index_si = line.rfind("\\si", 0, col)
+	if index_si < 0:
+		return False
+	index_closed = line.find("}", index_si)
+	return index_closed > col
+
+def text_inside_command(snip):
+	(line_no, col) = snip.cursor
+	line = snip.buffer[line_no]
+	index_command = line.rfind("\\", 0, col)
+	if index_command < 0:
+		return False
+	return re.fullmatch("\\w*", line[index_command+1:col])
+
+def space(tabstop):
+	if tabstop and tabstop[0] not in {",", "_", "^", ".", "?", ";", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", " "}:
+		return " "
+	return ""
+endglobal
+
+snippet setup "setup" bA
+\\documentclass[12pt]{article}
+\\input{preamble}
+
+\\title{$1}
+\\author{Naman Mishra}
+\\date{${2:\\today}}
+
+\\begin{document}
+\\maketitle
+
+$0
+
+\\end{document}
+endsnippet
+
+
+##############
+## CALCULUS ##
+##############
+
+# context "math()"
+# snippet "\((.*)\)(d?dot)" "dot/ddot" riA
+# `!p snip.rv = f"\\{match.group(2)}{{{match.group(1)}}}"`
+# endsnippet
+
+priority 20
+context "math()"
+snippet "([^ d.{},;\-+=<>()'?!$0-9[\]]+)(d?dot)" "post dot/ddot" riA
+\\`!p snip.rv = match.group(2) + "{" + match.group(1) + "}"`
+endsnippet
+
+priority 0
+context "math()"
+snippet "d?dot" "pre dot/ddot" rA
+\\`!p snip.rv = match.group(0)`{${1:${VISUAL}}}$0
+endsnippet
+
+priority 10
+
+context "math()"
+snippet "([a-zA-Z]+)hat" "hat" riA
+\\hat{`!p snip.rv = match.group(1)
+if snip.rv == "i" or snip.rv == "j":
+	snip.rv = "\\" + snip.rv`}
+endsnippet
+
+# snippet "([^\\ .{},;\-+=<>()'?!$0-9[\]]+)bar" "bar" riA
+context "math()"
+snippet "(\\?[a-zA-Z]+)bar" "bar" riA
+\\overline{`!p snip.rv = match.group(1)
+if snip.rv == "i" or snip.rv == "j":
+	snip.rv = "\\" + snip.rv`}
+endsnippet
+
+priority 0
+context "math()"
+snippet hat "hat" iA
+\\hat{${1:${VISUAL}}}$0
+endsnippet
+
+snippet bar "bar" iA
+\\overline{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+#snippet "\\?(p?dv)" "[partial] derivative" riA
+#\\`!p snip.rv = match.group(1) + ("[" if t[1] else "")`${1:order}`!p snip.rv = "]" if t[1] else ""`{$2}{$3}$0
+
+snippet "([0-9]*)\\?(p?dv)" "[partial] derivative" riA
+\\`!p snip.rv = match.group(2) + (f'[{match.group(1)}]' if match.group(1) else '')`{$1}{$2}$0
+endsnippet
+
+context "math()"
+priority 10
+snippet dint "definite integral" iA
+\\int_{${1:a}}^{${2:b}} ${3:f(x)} \\dd ${4:x}$0
+endsnippet
+
+context "math()"
+snippet tint "indefinite integral" iA
+\\int ${1:f(t)} \\dd ${2:t}$0
+endsnippet
+priority 0
+
+context "math()"
+snippet "\\?int" "indefinite integral" riA
+\\int ${1:f(x)} \\dd ${2:x}$0
+endsnippet
+
+context "math()"
+snippet dx "dx" iA
+\\dd x
+endsnippet
+
+
+#############
+## PHYSICS ##
+#############
+
+context "math()"
+snippet "\\?SI" "SI" riA
+\\SI{${1:value}}{${2:units}}$0
+endsnippet
+
+context "not math()"
+snippet "\\?SI" "SI outside math mode" r
+\\SI{${1:value}}{${2:units}}$0
+endsnippet
+
+context "math()"
+snippet unit "units" iA
+\\;\\si{$1}$0
+endsnippet
+
+context "math()"
+snippet hbar "h bar" iA
+\\hslash
+endsnippet
+
+context "math()"
+snippet h "Planck's constant" i
+\\SI{6.626e-34}{J.s}
+endsnippet
+
+context "math()"
+snippet qe "electronic charge" i
+\\SI{1.602e-19}{C}
+endsnippet
+
+
+###########
+##  ENV  ##
+###########
+snippet beg "begin{} / end{}" bA
+\\begin{$1}$2
+	${0:${VISUAL}}
+\\end{$1}
+endsnippet
+
+snippet beg "begin{} / end{}"
+\\begin{$1}$2
+	${0:${VISUAL}}
+\\end{$1}
+endsnippet
+
+snippet aln "begin{} / end{}" bA
+\\begin{align*}
+	${0:${VISUAL}}
+\\end{align*}
+endsnippet
+
+snippet proof "proof" bA
+\\begin{proof}
+	${0:${VISUAL}}
+\\end{proof}
+endsnippet
+
+snippet problem "problem environment" bA
+\\begin{problem}
+	${0:${VISUAL}}
+\\end{problem}
+endsnippet
+
+snippet ans "answer environment" bA
+\\begin{answer}
+	${0:${VISUAL}}
+\\end{answer}
+endsnippet
+
+snippet "(rem)|(example)" "remark" rbA
+\\begin{`!p snip.rv = match.group(0)`}
+	${1:${VISUAL}}
+\\end{`!p snip.rv = match.group(0)`}
+endsnippet
+
+snippet "(thm)|(prop)|(lem)|(cor)" "theorems" brA
+\\begin{`!p snip.rv = match.group(0)`}[$1] \\label{thm:$2}
+	${3:${VISUAL}}
+\\end{`!p snip.rv = match.group(0)`}
+endsnippet
+
+snippet "(defn)|(axiom)" "definitions" brA
+\\begin{`!p snip.rv = match.group(0)`}[$1] \\label{defn:$2}
+	${3:${VISUAL}}
+\\end{`!p snip.rv = match.group(0)`}
+endsnippet
+
+snippet facts "facts" bA
+\\begin{facts}
+	${1:${VISUAL}}
+\\end{facts}
+endsnippet
+
+snippet spoof "self proof" bA
+\\begin{proof}[Proof \textcolor{red!70!black}{(self)}]
+	$0
+\\end{proof}
+endsnippet
+
+snippet enum "enumerate" bA
+\\begin{enumerate}[label=${1:(\alph*)}]
+	\item ${0:${VISUAL}}
+\\end{enumerate}
+endsnippet
+
+snippet out "outline" bA
+\\begin{outline}
+	\1 ${0:${VISUAL}}
+\\end{outline}
+endsnippet
+
+snippet ctz "center tikzpicture" bA
+\\begin{center}
+	\\begin{tikzpicture}
+		${0:${VISUAL}}
+	\\end{tikzpicture}
+\\end{center}
+endsnippet
+
+snippet tz "tikzpicture" bA
+\\begin{tikzpicture}
+	${0:${VISUAL}}
+\\end{tikzpicture}
+endsnippet
+
+#################
+##  FORMATTING ##
+#################
+snippet bb "bold" A
+\\textbf{${1:${VISUAL}}}$0
+endsnippet
+
+snippet ii "italics" iA
+\\textit{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet mcl "mathcal" iA
+\\mathcal{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet mcr "mathscr" iA
+\\mathscr{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet mfk "mathfrak" iA
+\\mathfrak{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet mrm "mathrm" iA
+\\mathrm{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet ^ "superscript" iA
+^{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet _ "subscript" iA
+_{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet "([a-zA-Z])([0-9])" "numerical subscript" rA
+`!p snip.rv = match.group(1) + "_{" + match.group(2) + "}"`$0
+endsnippet
+
+context "math()"
+snippet ~ "tilde" iA
+\\tilde{${1:${VISUAL}}}$0
+endsnippet
+
+snippet ee "emphasis" A
+\\emph{${1:${VISUAL}}}$0
+endsnippet
+
+priority 10
+context "math()"
+snippet "([^ .{},;\-+=<>()'?!$0-9[\]]+)bm" "post bm" riA
+\\bm{`!p snip.rv = match.group(1)`}
+endsnippet
+
+priority 0
+context "math()"
+snippet bm "pre bm" iA
+\\bm{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet tt "\\text{}" iA
+\\text{${1:${VISUAL}}}$0
+endsnippet
+
+context "math()"
+snippet bb "mathbb" iA
+\\mathbb{$1}$0
+endsnippet
+
+context "math()"
+snippet cal "mathcal" iA
+\\mathcal{$1}$0
+endsnippet
+
+
+###############
+##  MATH OP  ##
+###############
+
+#inequalities
+context "math()"
+snippet <= "\\leq" iA
+\\leq
+endsnippet
+
+context "math()"
+snippet >= "\\geq" iA
+\\geq
+endsnippet
+
+context "math()"
+snippet != "\\neq" iA
+\\neq
+endsnippet
+
+context "math()"
+snippet +- "plus-minus" iA
+\\pm
+endsnippet
+
+context "math()"
+snippet "\\?(for)?all" "forall" riA
+\\forall
+endsnippet
+
+context "math()"
+snippet EE "exists" iA
+\\exists
+endsnippet
+
+context "math()"
+snippet ++ "increment" iA
+_{++}
+endsnippet
+
+context "math()"
+snippet -- "decrement" iA
+_{--}
+endsnippet
+
+context "math()"
+snippet xx "times" iA
+\\times
+endsnippet
+
+context "math()"
+snippet .. "cdot" iA
+\\cdot
+endsnippet
+
+context "math()"
+snippet \cdot. "dots" iA
+\\dots
+endsnippet
+
+snippet ... "dots" iA
+\\dots
+endsnippet
+
+
+####################
+##  TRIGONOMETRY  ##
+####################
+
+context "math() and not text_inside_command(snip)"
+snippet "\\?(((arc)?(sin)|(cos)|(tan))|(sec)|(csc)|(cot))" "trigonometric functions" riA
+\\`!p snip.rv = match.group(1)`
+endsnippet
+
+context "math()"
+snippet "\\?((ln)|(log)|(lim)|(max)|(min)|(exp)|(det)|(sup)|(inf))" "log-like functions" riA
+\\`!p snip.rv = match.group(1)`
+endsnippet
+
+context "math()"
+snippet "\\?\b((in)|(to)|(cup)|(cap))" "log-like functions" riA
+\\`!p snip.rv = match.group(1)`
+endsnippet
+
+##################
+##  DELIMITERS  ##
+##################
+context "math()"
+snippet << "angle brackets" iA
+\\langle ${1:${VISUAL}}\\rangle
+endsnippet
+
+priority 10
+context "math()"
+snippet ll( "large parentheses" iA
+\\left(${1:${VISUAL}}\\right)$0
+endsnippet
+
+priority 0
+context "math()"
+snippet ( "parentheses" iA
+(${1:${VISUAL}})$0
+endsnippet
+
+priority 10
+context "math()"
+snippet ll[ "large brackets" iA
+\\left[${1:${VISUAL}}\\right]$0
+endsnippet
+
+priority 0
+context "math()"
+snippet [ "brackets" iA
+[${1:${VISUAL}}]$0
+endsnippet
+
+context text_after_cursor_matches(snip, "\)")
+snippet ) "duplicate closing parentheses" iA
+
+endsnippet
+
+snippet { "braces" iA
+\{${1:${VISUAL}}\}$0
+endsnippet
+
+context text_after_cursor_matches(snip, "}")
+snippet } "duplicate closing brace" iA
+
+endsnippet
+
+priority 10
+snippet \{ "escaped braces" iA
+\\{${1:${VISUAL}}\\}$0
+endsnippet
+priority 0
+
+context "math()"
+snippet | "absolute value" iA
+\\abs{${1:${VISUAL}}}$0
+endsnippet
+
+priority 10
+context "math()"
+snippet abs{| "norm" iA
+norm{
+endsnippet
+priority 0
+
+#############
+##  GREEK  ##
+#############
+
+context "math() and not text_inside_command(snip)"
+snippet "[gG][a-zA-Z]" "greek alphabet" riA
+\\`!p snip.rv = greek(match.group(0))`
+endsnippet
+
+context "math()"
+snippet "\\?pi" "pi" riA
+\\pi
+endsnippet
+
+#############
+##  LOGIC  ##
+#############
+
+context "math()"
+snippet not "negation" iA
+\\neg
+endsnippet
+
+context "math() and not text_inside_command(snip)"
+snippet and "logical and" iA
+\\land
+endsnippet
+
+context "math() and not text_inside_command(snip)"
+snippet or "or" iA
+\\lor
+endsnippet
+
+priority 10
+context "math() and not text_inside_command(snip)"
+snippet xor "xor" iA
+\\lxor
+endsnippet
+priority 0
+
+context "math()"
+snippet "((\\)?imp)|(=>)" "implies" riA
+\\implies`!p snip.rv = space(t[1])`$1
+endsnippet
+
+context "math()"
+snippet =- "equivalence" iA
+\\equiv
+endsnippet
+
+snippet TT "true" iA
+\\true
+endsnippet
+
+snippet FF "false" iA
+\\false
+endsnippet
+
+############
+##  MISC  ##
+############
+
+context "not math()"
+snippet " ([b-zB-HJ-Z])([ ,.:?])" "one-letter variables" riA
+`!p snip.rv = ' $' + match.group(1) + '$' + match.group(2)`
+endsnippet
+
+# context "not math()"
+# snippet " ([0-9]+)([ ,.:?])" "numbers" riA
+# `!p snip.rv = ' $' + match.group(1) + '$' + match.group(2)`
+# endsnippet
+
+context "not math()"
+snippet $ "inline math" iA
+\$${1:${VISUAL}}\$$0
+endsnippet
+
+context "not math()"
+snippet dm "display math" A
+\\[
+	${1:${VISUAL}}
+\\]$0
+endsnippet
+
+context "math()"
+snippet // "fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet == "&=" iA
+&=
+endsnippet
+
+context "math()"
+snippet 1/ "reciprocal" iA
+\\frac{1}{${1:${VISUAL}}}$0
+endsnippet

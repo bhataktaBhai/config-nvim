@@ -1,0 +1,17 @@
+{
+  "Comment.nvim": { "branch": "master", "commit": "176e85eeb63f1a5970d6b88f1725039d85ca0055" },
+  "copilot.lua": { "branch": "master", "commit": "9cb5396205faf609bc9df0e841e133ccb1b70540" },
+  "haskell-vim": { "branch": "master", "commit": "f35d02204b4813d1dbe8b0e98cc39701a4b8e15e" },
+  "lazy.nvim": { "branch": "main", "commit": "b7043f2983d7aead78ca902f3f2053907081859a" },
+  "lualine.nvim": { "branch": "master", "commit": "05d78e9fd0cdfb4545974a5aa14b1be95a86e9c9" },
+  "nightfox.nvim": { "branch": "main", "commit": "77aa7458d2b725c2d9ff55a18befe1b891ac473e" },
+  "nvim-tree.lua": { "branch": "master", "commit": "c3c6544ee00333b0f1d6a13735d0dd302dba4f70" },
+  "nvim-web-devicons": { "branch": "master", "commit": "14b3a5ba63b82b60cde98d0a40319d80f25e8301" },
+  "tree-sitter": { "branch": "master", "commit": "d0029a15273e526925a764033e9b7f18f96a7ce5" },
+  "trouble.nvim": { "branch": "main", "commit": "2af0dd9767526410c88c628f1cbfcb6cf22dd683" },
+  "ultisnips": { "branch": "master", "commit": "0ad238b1910d447476b2d98f593322c1cdb71285" },
+  "vim-argumentative": { "branch": "master", "commit": "63a5f7deb675c38126de626f4c00e000902462fe" },
+  "vim-hindent": { "branch": "master", "commit": "f8e84c199fd00a3ccaf5bbbc97786bde9a4faa13" },
+  "vimtex": { "branch": "master", "commit": "2b31261b20e44c4b3c79ca7e42e2f9a5cdbe8cd3" },
+  "wal": { "branch": "master", "commit": "a9ec79d7b7ed1ad6c5c6fa5196140e553a5c13f6" }
+}
