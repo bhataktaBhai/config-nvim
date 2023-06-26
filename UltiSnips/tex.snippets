@@ -115,7 +115,7 @@ endsnippet
 
 # snippet "([^\\ .{},;\-+=<>()'?!$0-9[\]]+)bar" "bar" riA
 context "math()"
-snippet "(\\?[a-zA-Z]+)bar" "bar" riA
+snippet "([a-zA-Z]+)bar" "bar" riA
 \\overline{`!p snip.rv = match.group(1)
 if snip.rv == "i" or snip.rv == "j":
 	snip.rv = "\\" + snip.rv`}
@@ -132,10 +132,10 @@ snippet bar "bar" iA
 endsnippet
 
 context "math()"
-#snippet "\\?(p?dv)" "[partial] derivative" riA
+#snippet "(p?dv)" "[partial] derivative" riA
 #\\`!p snip.rv = match.group(1) + ("[" if t[1] else "")`${1:order}`!p snip.rv = "]" if t[1] else ""`{$2}{$3}$0
 
-snippet "([0-9]*)\\?(p?dv)" "[partial] derivative" riA
+snippet "([0-9]*)(p?dv)" "[partial] derivative" riA
 \\`!p snip.rv = match.group(2) + (f'[{match.group(1)}]' if match.group(1) else '')`{$1}{$2}$0
 endsnippet
 
@@ -152,7 +152,7 @@ endsnippet
 priority 0
 
 context "math()"
-snippet "\\?int" "indefinite integral" riA
+snippet "int" "indefinite integral" riA
 \\int ${1:f(x)} \\dd ${2:x}$0
 endsnippet
 
@@ -167,12 +167,12 @@ endsnippet
 #############
 
 context "math()"
-snippet "\\?SI" "SI" riA
+snippet "SI" "SI" riA
 \\SI{${1:value}}{${2:units}}$0
 endsnippet
 
 context "not math()"
-snippet "\\?SI" "SI outside math mode" r
+snippet "SI" "SI outside math mode" r
 \\SI{${1:value}}{${2:units}}$0
 endsnippet
 
@@ -401,7 +401,7 @@ snippet +- "plus-minus" iA
 endsnippet
 
 context "math()"
-snippet "\\?(for)?all" "forall" riA
+snippet "(for)?all" "forall" riA
 \\forall
 endsnippet
 
@@ -445,17 +445,17 @@ endsnippet
 ####################
 
 context "math() and not text_inside_command(snip)"
-snippet "\\?(((arc)?(sin)|(cos)|(tan))|(sec)|(csc)|(cot))" "trigonometric functions" riA
+snippet "(((arc)?(sin)|(cos)|(tan))|(sec)|(csc)|(cot))" "trigonometric functions" riA
 \\`!p snip.rv = match.group(1)`
 endsnippet
 
 context "math()"
-snippet "\\?((ln)|(log)|(lim)|(max)|(min)|(exp)|(det)|(sup)|(inf))" "log-like functions" riA
+snippet "((ln)|(log)|(lim)|(max)|(min)|(exp)|(det)|(sup)|(inf))" "log-like functions" riA
 \\`!p snip.rv = match.group(1)`
 endsnippet
 
 context "math()"
-snippet "\\?\b((in)|(to)|(cup)|(cap))" "log-like functions" riA
+snippet "\b((in)|(to)|(cup)|(cap))" "log-like functions" riA
 \\`!p snip.rv = match.group(1)`
 endsnippet
 
@@ -533,7 +533,7 @@ snippet "[gG][a-zA-Z]" "greek alphabet" riA
 endsnippet
 
 context "math()"
-snippet "\\?pi" "pi" riA
+snippet "pi" "pi" riA
 \\pi
 endsnippet
 
@@ -545,6 +545,8 @@ context "math()"
 snippet not "negation" iA
 \\neg
 endsnippet
+# \neg and \lnot are EXACTLY the same
+# \lnot is an alias for \neg
 
 context "math() and not text_inside_command(snip)"
 snippet and "logical and" iA
