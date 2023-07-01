@@ -12,13 +12,13 @@ return {
             },
          },
       },
-      init = function()
+      config = function(_, opts)
+         require('nightfox').setup(opts)
          vim.cmd([[colorscheme carbonfox]])
       end,
    },
    {
       'nvim-lualine/lualine.nvim',
-      lazy = false,
       dependencies = { 'nvim-tree/nvim-web-devicons' },
       opts = {
          options = {

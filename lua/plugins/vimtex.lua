@@ -1,8 +1,11 @@
--- let g:airline#extensions#vimtex#enabled = 1
 return {
    {
       'lervag/vimtex',
       ft = 'tex',
+      -- keys = {
+      --    {'<localleader>e', ':VimtexErrors<CR>', mode = 'n',
+      --       desc = 'vimtex errors', remap = false, silent = true},
+      -- },
       config = function()
          local let = vim.g
          let.tex_flavor = 'latex'
@@ -10,18 +13,10 @@ return {
          let.vimtex_compiler_progname = 'latexmk'
          let.tex_conceal = 'abdmg'
          let.vimtex_syntax_conceal = {sections = 1}
-         let.airline_extensions_vimtex_enabled = 1
 
          let.vimtex_view_method = 'skim'
          let.vimtex_view_skim_activate = 1
          let.vimtex_view_skim_sync = 1
-
-         local map = vim.keymap.set
-         map('n', '<localleader>e', ':VimtexErrors<CR>', {
-            remap = false,
-            silent = true,
-            desc = 'vimtex errors',
-         })
 
          local math_toggle = {}
          math_toggle['$'] = '\\['
@@ -39,7 +34,7 @@ return {
             {name = 'O', concealchar = '∅'},
             {name = 'lxor', concealchar = '⊕'},
          }
-         
+
          -- vim.cmd([[function! s:TexFocusVim() abort
          --   " Replace `TERMINAL` with the name of your terminal application
          --   " Example: execute "!open -a iTerm"  
@@ -66,6 +61,16 @@ return {
            autocmd User VimtexEventViewReverse call TexFocusVim()
          augroup END
          ]])
+
+         let.vimtex_quickfix_ignore_filters = {
+            'Underfull \\hbox (badness [0-9]*) in paragraph at lines',
+            'Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in paragraph at lines',
+            'Underfull \\hbox (badness [0-9]*) in ',
+            'Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in ',
+            'Package hyperref Warning: Token not allowed in a PDF string',
+            'Package typearea Warning: Bad type area settings!'
+         }
+         vim.opt.conceallevel = 2
       end
    }
 }

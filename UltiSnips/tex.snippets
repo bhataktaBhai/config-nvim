@@ -231,31 +231,31 @@ endsnippet
 
 snippet "(rem)|(example)" "remarks" brA
 \\begin{`!p snip.rv = match.group(0)`}
-	${1:${VISUAL}}
+	${0:${VISUAL}}
 \\end{`!p snip.rv = match.group(0)`}
 endsnippet
 
 snippet "(thm)|(prop)|(lem)|(cor)" "theorems" brA
 \\begin{`!p snip.rv = match.group(0)`}[$1] \\label{thm:$2}
-	${3:${VISUAL}}
+	${0:${VISUAL}}
 \\end{`!p snip.rv = match.group(0)`}
 endsnippet
 
 snippet "(defn)|(axiom)" "definitions" brA
 \\begin{`!p snip.rv = match.group(0)`}[$1] \\label{defn:$2}
-	${3:${VISUAL}}
+	${0:${VISUAL}}
 \\end{`!p snip.rv = match.group(0)`}
 endsnippet
 
 snippet facts "facts" bA
 \\begin{facts}
-	${1:${VISUAL}}
+	${0:${VISUAL}}
 \\end{facts}
 endsnippet
 
 snippet spf "self proof" bA
 \\begin{proof}[Proof \textcolor{${1:self-proof}}{(self)}]
-	$0
+	${0:${VISUAL}}
 \\end{proof}
 endsnippet
 
@@ -596,7 +596,7 @@ snippet " ([b-zB-HJ-Z])([ ,.:?!])" "one-letter variables" rA
 `!p snip.rv = ' $' + match.group(1) + '$' + match.group(2)`
 endsnippet
 
-context "text()"
+context "math()"
 snippet $ "inline math" iA
 \$${1:${VISUAL}}\$$0
 endsnippet

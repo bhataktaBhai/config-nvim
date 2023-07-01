@@ -1,8 +1,8 @@
 return {
-   {
-      'nvim-tree/nvim-tree.lua',
-      dependencies = { 'nvim-tree/nvim-web-devicons' },
-   },
+   -- {
+   --    'nvim-tree/nvim-tree.lua',
+   --    dependencies = { 'nvim-tree/nvim-web-devicons' },
+   -- },
    {
       'numToStr/Comment.nvim',
       opts = {
@@ -16,12 +16,16 @@ return {
             block = '<localleader>b',
          },
       },
+      keys = {'<leader>c', '<leader>b', '<localleader>c', '<localleader>b'},
    },
-   'tree-sitter/tree-sitter',
-   'PeterRincker/vim-argumentative',
-   'dylanaraps/wal',
+   -- 'tree-sitter/tree-sitter',
    {
-      'folke/trouble.nvim',
-       dependencies = { 'nvim-tree/nvim-web-devicons' },
-   },
+      'PeterRincker/vim-argumentative',
+      keys = {'<,', '>,', '[,', '],'},
+   }
+   -- 'dylanaraps/wal',
+   -- {
+   --    'folke/trouble.nvim',
+   --     dependencies = { 'nvim-tree/nvim-web-devicons' },
+   -- },
 }
