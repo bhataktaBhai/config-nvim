@@ -1,0 +1,203 @@
+global !p
+greek_table = {
+	'a' : 'alpha',
+	'b' : 'beta',
+	'c' : 'gamma',
+	'd' : 'delta',
+	'e' : 'varepsilon',
+	'f' : 'phi',
+	'g' : 'gamma',
+	'h' : 'theta',
+	'i' : 'iota',
+	'k' : 'kappa',
+	'l' : 'lambda',
+	'm' : 'mu',
+	'n' : 'nu',
+	'o' : 'omega',
+	'p' : 'rho',
+	'r' : 'rho',
+	's' : 'sigma',
+	't' : 'tau',
+	'u' : 'mu',
+	'w' : 'psi',
+	'x' : 'chi',
+	'z' : 'zeta'
+}
+
+delimiters = "[ .{},;\-+=<>()'?!0-9[\]]"
+units = '(kg)|(Hz)|(mol)|[msKN]'
+
+def greek(trigger):
+	upper = not trigger.islower()
+	english = trigger[1]
+	if not upper:
+		return greek_table[english]
+	greek = greek_table[english.lower()]
+	return greek[0].upper() + greek[1:]
+
+def math():
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+def text():
+	return not math()
+
+def text_after_cursor_matches(snip, string):
+    (line, col) = snip.cursor
+    text_after_cursor = snip.buffer[line][col:]
+    return re.match(string, text_after_cursor)
+
+def text_inside_si(snip):
+	(line_no, col) = snip.cursor
+	line = snip.buffer[line_no]
+	index_si = line.rfind('\\si', 0, col)
+	if index_si < 0:
+		return False
+	index_closed = line.find('}', index_si)
+	return index_closed > col
+
+def text_inside_command(snip):
+	(line_no, col) = snip.cursor
+	line = snip.buffer[line_no]
+	index_command = line.rfind('\\', 0, col)
+	if index_command < 0:
+		return False
+	return re.fullmatch('\\w*', line[index_command+1:col])
+
+def space(tabstop):
+	if tabstop and tabstop[0] not in {',', '_', '^', '.', '?', ';', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' '}:
+		return ' '
+	return ''
+endglobal
+
+snippet setup "setup" bA
+\\documentclass[12pt]{article}
+\\input{preamble}
+
+\\title{$1}
+\\author{Naman Mishra}
+\\date{${2:\\today}}
+
+\\begin{document}
+\\maketitle
+
+$0
+
+\\end{document}
+endsnippet
+
+###################
+##  DERIVATIVES  ##
+###################
+#################
+##  INTEGRALS  ##
+#################
+###############
+##  ACCENTS  ##
+###############
+###############
+##  PHYSICS  ##
+###############
+###########
+##  ENV  ##
+###########
+snippet facts "facts" bA
+\\begin{facts}
+	${0:${VISUAL}}
+\\end{facts}
+endsnippet
+
+snippet out "outline" bA
+\\begin{outline}
+	\\1 ${0:${VISUAL}}
+\\end{outline}
+endsnippet
+
+#####################
+## TEXT FORMATTING ##
+#####################
+#####################
+## MATH FORMATTING ##
+#####################
+#############
+## MATH OP ##
+#############
+context "math()"
+snippet <= "\\leq" iA
+\\leq
+endsnippet
+
+context "math()"
+snippet >= "\\geq" iA
+\\geq
+endsnippet
+
+context "math()"
+snippet != "\\neq" iA
+\\neq
+endsnippet
+
+context "math()"
+snippet +- "plus-minus" iA
+\\pm
+endsnippet
+
+context "math()"
+snippet ++ "increment" iA
+_{++}
+endsnippet
+
+context "math()"
+snippet -- "decrement" iA
+_{--}
+endsnippet
+
+context "math()"
+snippet xx "times" iA
+\\times
+endsnippet
+
+context "math()"
+snippet .. "cdot" iA
+\\cdot
+endsnippet
+
+context "math()"
+snippet \cdot. "dots" iA
+\\dots
+endsnippet
+
+snippet ... "dots" iA
+\\dots
+endsnippet
+
+#####################
+##  ADD BACKSLASH  ##
+#####################
+##################
+##  DELIMITERS  ##
+##################
+#############
+##  GREEK  ##
+#############
+##################
+##  SET THEORY  ##
+##################
+#############
+##  LOGIC  ##
+#############
+############
+##  MISC  ##
+############
+context "math()"
+snippet // "fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet == "&=" iA
+&=
+endsnippet
+
+context "math()"
+snippet 1/ "reciprocal" iA
+\\frac{1}{${1:${VISUAL}}}$0
+endsnippet

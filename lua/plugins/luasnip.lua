@@ -8,6 +8,7 @@ return {
          -- which makes more sense, and also has multisnippets.
       -- install jsregexp (optional!).
       build = 'make install_jsregexp',
+      event = 'VeryLazy',
       keys = {
          {
             '<tab>', function()
@@ -24,7 +25,7 @@ return {
             update_events = 'TextChanged,TextChangedI',
             store_selection_keys = '<tab>',
          })
-         require('luasnip.loaders.from_lua').lazy_load({paths = '~/.config/nvim/LuaSnip/'})
+         require('luasnip.loaders.from_lua').lazy_load({paths = '~/.config/nvim/lua/LuaSnip/'})
       end,
    },
 }

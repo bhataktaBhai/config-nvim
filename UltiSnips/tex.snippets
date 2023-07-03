@@ -1,31 +1,31 @@
 global !p
 greek_table = {
-	"a" : "alpha",
-	"b" : "beta",
-	"c" : "gamma",
-	"d" : "delta",
-	"e" : "varepsilon",
-	"f" : "phi",
-	"g" : "gamma",
-	"h" : "theta",
-	"i" : "iota",
-	"k" : "kappa",
-	"l" : "lambda",
-	"m" : "mu",
-	"n" : "nu",
-	"o" : "omega",
-	"p" : "rho",
-	"r" : "rho",
-	"s" : "sigma",
-	"t" : "tau",
-	"u" : "mu",
-	"w" : "psi",
-	"x" : "chi",
-	"z" : "zeta"
+	'a' : 'alpha',
+	'b' : 'beta',
+	'c' : 'gamma',
+	'd' : 'delta',
+	'e' : 'varepsilon',
+	'f' : 'phi',
+	'g' : 'gamma',
+	'h' : 'theta',
+	'i' : 'iota',
+	'k' : 'kappa',
+	'l' : 'lambda',
+	'm' : 'mu',
+	'n' : 'nu',
+	'o' : 'omega',
+	'p' : 'rho',
+	'r' : 'rho',
+	's' : 'sigma',
+	't' : 'tau',
+	'u' : 'mu',
+	'w' : 'psi',
+	'x' : 'chi',
+	'z' : 'zeta'
 }
 
 delimiters = "[ .{},;\-+=<>()'?!0-9[\]]"
-units = "(kg)|(Hz)|(mol)|[msKN]"
+units = '(kg)|(Hz)|(mol)|[msKN]'
 
 def greek(trigger):
 	upper = not trigger.islower()
@@ -36,7 +36,7 @@ def greek(trigger):
 	return greek[0].upper() + greek[1:]
 
 def math():
-	return vim.eval("vimtex#syntax#in_mathzone()") == "1"
+	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
 def text():
 	return not math()
 
@@ -48,24 +48,24 @@ def text_after_cursor_matches(snip, string):
 def text_inside_si(snip):
 	(line_no, col) = snip.cursor
 	line = snip.buffer[line_no]
-	index_si = line.rfind("\\si", 0, col)
+	index_si = line.rfind('\\si', 0, col)
 	if index_si < 0:
 		return False
-	index_closed = line.find("}", index_si)
+	index_closed = line.find('}', index_si)
 	return index_closed > col
 
 def text_inside_command(snip):
 	(line_no, col) = snip.cursor
 	line = snip.buffer[line_no]
-	index_command = line.rfind("\\", 0, col)
+	index_command = line.rfind('\\', 0, col)
 	if index_command < 0:
 		return False
-	return re.fullmatch("\\w*", line[index_command+1:col])
+	return re.fullmatch('\\w*', line[index_command+1:col])
 
 def space(tabstop):
-	if tabstop and tabstop[0] not in {",", "_", "^", ".", "?", ";", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", " "}:
-		return " "
-	return ""
+	if tabstop and tabstop[0] not in {',', '_', '^', '.', '?', ';', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ' '}:
+		return ' '
+	return ''
 endglobal
 
 snippet setup "setup" bA
@@ -101,7 +101,7 @@ endsnippet
 
 context "math()"
 snippet "([0-9]*)(p?dv)" "[partial] derivative" rA
-\\`!p snip.rv = match.group(2) + (f'[{match.group(1)}]' if match.group(1) else '')`{$1}{$2}$0
+\\`!p snip.rv = match.group(2) + (f"[{match.group(1)}]" if match.group(1) else "")`{$1}{$2}$0
 endsnippet
 
 #################

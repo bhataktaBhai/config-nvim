@@ -1,6 +1,19 @@
+local ls = require('luasnip')
+local s = ls.snippet
+local sn = ls.snippet_node
+local t = ls.text_node
+local i = ls.insert_node
+local extras = require('luasnip.extras')
+local rep = extras.rep
+local n = extras.nonempty
+local fmta = require('luasnip.extras.fmt').fmta
+local ms = ls.multi_snippet
+
 local line_begin = require('luasnip.extras.conditions.expand').line_begin
 
-local ne = extras.nonempty
+local util = require('LuaSnip.util')
+local vn = util.visual_node
+local ivn = util.indent_visual_node
 
 local autosnippets = {
    s(
@@ -9,7 +22,7 @@ local autosnippets = {
          name = 'inline math environment',
          dscr = 'autotriggerred inline math environment',
       },
-      { t"$", i(1), t"$", i(0) }
+      { t"$", vn(), i(1), t"$", i(0) }
    ),
    s(
       {
@@ -23,7 +36,7 @@ local autosnippets = {
                 <>
             \]<>
          ]],
-         { i(1), i(0) }
+         { vn(), i(1), i(0) }
       )
    ),
    ms(
@@ -45,10 +58,17 @@ local autosnippets = {
       fmta(
          [[
             \begin{<>}
-                <>
+                <><>
             \end{<>}
          ]],
-         { i(1), i(0), rep(1) }
+         {
+            i(1),
+            -- f(function (_, snip)
+            --    return snip.env.TM_SELECTED_TEXT
+            -- end),
+            ivn(), i(0),
+            rep(1),
+         }
       )
    ),
    s(
@@ -61,10 +81,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{align*}
-                <>
+                <><>
             \end{align*}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -77,13 +97,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{theorem}<><>
-                <>
+                <><>
             \end{theorem}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{thm:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -97,13 +117,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{lemma}<><>
-                <>
+                <><>
             \end{lemma}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{thm:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -117,13 +137,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{proposition}<><>
-                <>
+                <><>
             \end{proposition}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{thm:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -137,13 +157,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{corollary}<><>
-                <>
+                <><>
             \end{corollary}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{thm:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -157,10 +177,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{proof}
-                <>
+                <><>
             \end{proof}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -173,10 +193,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{proof}[Proof \textcolor{<>}{(self)}]
-                <>
+                <><>
             \end{proof}
          ]],
-         { i(1, 'self-proof'), i(0) }
+         { i(1, 'self-proof'), ivn(), i(0) }
       )
    ),
    s(
@@ -189,13 +209,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{definition}<><>
-                <>
+                <><>
             \end{definition}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{def:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{def:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -209,13 +229,13 @@ local autosnippets = {
       fmta(
          [[
             \begin{axiom}<><>
-                <>
+                <><>
             \end{axiom}
          ]],
          {
-            sn(1, { ne(1, '[', ''), i(1), ne(1, ']', ''), }),
-            sn(2, { ne(1, ' \\label{def:', ''), i(1), ne(1, '}', '') }),
-            i(0),
+            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
+            sn(2, { n(1, ' \\label{def:', ''), i(1), n(1, '}', '') }),
+            ivn(), i(0),
          }
       )
    ),
@@ -229,10 +249,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{example}
-                <>
+                <><>
             \end{example}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -245,10 +265,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{examplelist}
-                <>
+                \item <><>
             \end{examplelist}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -261,10 +281,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{remark}
-                <>
+                <><>
             \end{remark}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -277,10 +297,10 @@ local autosnippets = {
       fmta(
          [[
             \begin{problem}
-                <>
+                <><>
             \end{problem}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(
@@ -293,13 +313,12 @@ local autosnippets = {
       fmta(
          [[
             \begin{solution}
-                <>
+                <><>
             \end{solution}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
-   
    s(
       {
          trig = 'enm',
@@ -313,7 +332,7 @@ local autosnippets = {
                 \item <>
             \end{enumerate}
          ]],
-         { i(0) }
+         { ivn(), i(0) }
       )
    ),
    s(

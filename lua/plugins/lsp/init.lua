@@ -9,6 +9,7 @@ return {
       },
       opts = {
          servers = {
+            vimls = {},
             lua_ls = {
                settings = {
                   Lua = {

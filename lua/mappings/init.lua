@@ -2,7 +2,7 @@ local map = vim.keymap.set
 local opts = {remap = false, silent = true}
 
 vim.g.mapleader = ' '
-vim.g.maplocalleader = '\\'
+vim.g.maplocalleader = ','
 
 local function nmap(lhs, rhs, opts)
    map('n', lhs, rhs, opts)

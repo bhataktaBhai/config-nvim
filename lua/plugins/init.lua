@@ -21,8 +21,13 @@ return {
    -- 'tree-sitter/tree-sitter',
    {
       'PeterRincker/vim-argumentative',
-      keys = {'<,', '>,', '[,', '],'},
-   }
+      event = 'VeryLazy',
+   },
+   -- {
+   --    'echasnovski/mini.pairs',
+   --    event = 'VeryLazy',
+   --    config = true,
+   -- },
    -- 'dylanaraps/wal',
    -- {
    --    'folke/trouble.nvim',
