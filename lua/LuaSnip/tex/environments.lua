@@ -33,7 +33,7 @@ local autosnippets = {
       fmta(
          [[
             \[
-                <>
+                <><>
             \]<>
          ]],
          { vn(), i(1), i(0) }
@@ -329,7 +329,7 @@ local autosnippets = {
       fmta(
          [[
             \begin{enumerate}
-                \item <>
+                \item <><>
             \end{enumerate}
          ]],
          { ivn(), i(0) }
