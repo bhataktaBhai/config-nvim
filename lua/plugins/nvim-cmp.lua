@@ -3,13 +3,13 @@ return {
    {
       'hrsh7th/nvim-cmp',
       version = false, -- latest version is too old per folke
-      event = 'InsertEnter',
       dependencies = {
          'hrsh7th/cmp-nvim-lsp',
          'hrsh7th/cmp-buffer',
          'hrsh7th/cmp-path',
          'saadparwaiz1/cmp_luasnip',
       },
+      event = 'InsertEnter',
       opts = function()
          local cmp = require('cmp')
          return {

@@ -1,10 +1,9 @@
 return {
-   -- {
-   --    'nvim-tree/nvim-tree.lua',
-   --    dependencies = { 'nvim-tree/nvim-web-devicons' },
-   -- },
+   ---- Order of keys
+   -- version, dependencies, build, lazy, priority, cmd, ft, event, keys, opts, init, config
    {
       'numToStr/Comment.nvim',
+      keys = {'<leader>c', '<leader>b', '<localleader>c', '<localleader>b'},
       opts = {
          ignore = '^$',
          toggler = {
@@ -16,7 +15,6 @@ return {
             block = '<localleader>b',
          },
       },
-      keys = {'<leader>c', '<leader>b', '<localleader>c', '<localleader>b'},
    },
    -- 'tree-sitter/tree-sitter',
    {

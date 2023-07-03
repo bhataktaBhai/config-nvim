@@ -1,12 +1,12 @@
 return {
    {
       'neovim/nvim-lspconfig',
-      event = {'BufReadPre', 'BufNewFile'},
       dependencies = {
          { 'folke/neodev.nvim', config = true },
          'mason.nvim',
          'williamboman/mason-lspconfig.nvim',
       },
+      event = {'BufReadPre', 'BufNewFile'},
       opts = {
          servers = {
             vimls = {},
@@ -43,8 +43,8 @@ return {
    },
    {
       'williamboman/mason.nvim',
-      cmd = 'Mason',
       build = ':MasonUpdate',
+      cmd = 'Mason',
       config = true,
    },
 }

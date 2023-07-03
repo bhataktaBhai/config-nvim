@@ -1,6 +1,6 @@
 return {
    {
       'neovimhaskell/haskell-vim',
-      ft = {'haskell'},
+      ft = 'haskell',
    },
 }
