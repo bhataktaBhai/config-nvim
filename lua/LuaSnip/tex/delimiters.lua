@@ -56,7 +56,7 @@ local autosnippets = {
          dscr = 'norm (dynamic)',
          priority = 10000, -- to override `|`
       },
-      { t('\\norm{') }
+      t('\\norm{')
    ),
    s(
       {

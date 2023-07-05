@@ -1,13 +1,14 @@
 local ls = require('luasnip')
 local s = ls.snippet
-local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
+local sn = ls.snippet_node
+local d = ls.dynamic_node
+local ms = ls.multi_snippet
 local extras = require('luasnip.extras')
-local rep = extras.rep
 local n = extras.nonempty
 local fmta = require('luasnip.extras.fmt').fmta
-local ms = ls.multi_snippet
+local k = require('luasnip.nodes.key_indexer').new_key
 
 local line_begin = require('luasnip.extras.conditions.expand').line_begin
 
@@ -15,11 +16,33 @@ local util = require('LuaSnip.util')
 local vn = util.visual_node
 local ivn = util.indent_visual_node
 
+local function surround_if_nonempty (jump_index, left, right, node, node_reference)
+   node_reference = node_reference or 1
+   return sn(jump_index, {
+      n(node_reference, left),
+      node,
+      n(node_reference, right),
+   })
+end
+local function label_text (argnodes, _, _, label_header)
+   local node
+   if argnodes[1][1] ~= '' then
+      node = sn(1, { -- jump_index = 1 for surround_if_nonempty
+         i(1),
+         i(2, argnodes[1][1]:gsub(' ', '_'):lower()),
+      })
+   else
+      node = i(1)
+   end
+   return surround_if_nonempty(nil, ' \\label{' .. label_header, '}', node)
+end
+
+local sin = surround_if_nonempty
+
 local autosnippets = {
    s(
       {
          trig = 'mm',
-         name = 'inline math environment',
          dscr = 'autotriggerred inline math environment',
       },
       { t"$", vn(), i(1), t"$", i(0) }
@@ -27,7 +50,6 @@ local autosnippets = {
    s(
       {
          trig = 'dm',
-         name = 'displaymath environment',
          dscr = 'autotriggerred displaymath environment',
       },
       fmta(
@@ -43,7 +65,7 @@ local autosnippets = {
       {
          common = {
             trig = 'bg',
-            name = 'begin environment',
+            dscr = 'begin environment',
          },
          {
             dscr = 'auto triggerred begin environment',
@@ -63,18 +85,14 @@ local autosnippets = {
          ]],
          {
             i(1),
-            -- f(function (_, snip)
-            --    return snip.env.TM_SELECTED_TEXT
-            -- end),
             ivn(), i(0),
-            rep(1),
+            extras.rep(1),
          }
       )
    ),
    s(
       {
          trig = 'aln',
-         name = 'align* environment',
          dscr = 'autotriggerred align* environment',
          condition = line_begin,
       },
@@ -90,7 +108,6 @@ local autosnippets = {
    s(
       {
          trig = 'tm',
-         name = 'theorem environment',
          dscr = 'autotriggerred theorem environment',
          condition = line_begin,
       },
@@ -101,8 +118,8 @@ local autosnippets = {
             \end{theorem}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
             ivn(), i(0),
          }
       )
@@ -110,7 +127,6 @@ local autosnippets = {
    s(
       {
          trig = 'lm',
-         name = 'lemma environment',
          dscr = 'autotriggerred lemma environment',
          condition = line_begin,
       },
@@ -121,8 +137,8 @@ local autosnippets = {
             \end{lemma}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
             ivn(), i(0),
          }
       )
@@ -130,7 +146,6 @@ local autosnippets = {
    s(
       {
          trig = 'prp',
-         name = 'proposition environment',
          dscr = 'autotriggerred proposition environment',
          condition = line_begin,
       },
@@ -141,8 +156,8 @@ local autosnippets = {
             \end{proposition}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
             ivn(), i(0),
          }
       )
@@ -150,7 +165,6 @@ local autosnippets = {
    s(
       {
          trig = 'crl',
-         name = 'corollary environment',
          dscr = 'autotriggerred corollary environment',
          condition = line_begin,
       },
@@ -161,8 +175,8 @@ local autosnippets = {
             \end{corollary}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{thm:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
             ivn(), i(0),
          }
       )
@@ -170,7 +184,6 @@ local autosnippets = {
    s(
       {
          trig = 'pf',
-         name = 'proof environment',
          dscr = 'autotriggerred proof environment',
          condition = line_begin,
       },
@@ -186,7 +199,6 @@ local autosnippets = {
    s(
       {
          trig = 'spf',
-         name = 'self proof environment',
          dscr = 'autotriggerred self proof environment',
          condition = line_begin,
       },
@@ -202,7 +214,6 @@ local autosnippets = {
    s(
       {
          trig = 'df',
-         name = 'definition environment',
          dscr = 'autotriggerred definition environment',
          condition = line_begin,
       },
@@ -213,8 +224,8 @@ local autosnippets = {
             \end{definition}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{def:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'def:' } }),
             ivn(), i(0),
          }
       )
@@ -222,7 +233,6 @@ local autosnippets = {
    s(
       {
          trig = 'ax',
-         name = 'axiom environment',
          dscr = 'autotriggerred axiom environment',
          condition = line_begin,
       },
@@ -233,8 +243,8 @@ local autosnippets = {
             \end{axiom}
          ]],
          {
-            sn(1, { n(1, '[', ''), i(1), n(1, ']', ''), }),
-            sn(2, { n(1, ' \\label{def:', ''), i(1), n(1, '}', '') }),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'def:' } }),
             ivn(), i(0),
          }
       )
@@ -242,7 +252,6 @@ local autosnippets = {
    s(
       {
          trig = 'xm',
-         name = 'example environment',
          dscr = 'autotriggerred example environment',
          condition = line_begin,
       },
@@ -258,7 +267,6 @@ local autosnippets = {
    s(
       {
          trig = 'xl',
-         name = 'examplelist environment',
          dscr = 'autotriggerred examplelist environment',
          condition = line_begin,
       },
@@ -274,7 +282,6 @@ local autosnippets = {
    s(
       {
          trig = 'rm',
-         name = 'remark environment',
          dscr = 'autotriggerred remark environment',
          condition = line_begin,
       },
@@ -290,7 +297,6 @@ local autosnippets = {
    s(
       {
          trig = 'pb',
-         name = 'problem environment',
          dscr = 'autotriggerred problem environment',
          condition = line_begin,
       },
@@ -306,7 +312,6 @@ local autosnippets = {
    s(
       {
          trig = 'sl',
-         name = 'solution environment',
          dscr = 'autotriggerred solution environment',
          condition = line_begin,
       },
@@ -322,7 +327,6 @@ local autosnippets = {
    s(
       {
          trig = 'enm',
-         name = 'enumerate environment',
          dscr = 'autotriggerred enumerate environment',
          condition = line_begin,
       },
@@ -338,7 +342,6 @@ local autosnippets = {
    s(
       {
          trig = 'tz',
-         name = 'tikzpicture environment',
          dscr = 'autotriggerred tikzpicture environment',
          condition = line_begin,
       },
@@ -354,7 +357,6 @@ local autosnippets = {
    s(
       {
          trig = 'ctz',
-         name = 'centered tikzpicture environment',
          dscr = 'autotriggerred centered tikzpicture environment',
          condition = line_begin,
       },
@@ -367,6 +369,67 @@ local autosnippets = {
             \end{center}
          ]],
          { i(0) }
+      )
+   ),
+   -- sections
+   s(
+      {
+         trig = '# ',
+         name = '\\section{}',
+         dscr = 'new section',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \section{<>}<>
+
+            <>
+         ]],
+         {
+            i(1),
+            d(2, label_text, 1, { user_args = { 'sec:' } }),
+            i(0),
+         }
+      )
+   ),
+   s(
+      {
+         trig = '## ',
+         name = '\\subsection{}',
+         dscr = 'new subsection',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \subsection{<>}<>
+
+            <>
+         ]],
+         {
+            i(1),
+            d(2, label_text, 1, { user_args = { 'sec:' } }),
+            i(0),
+         }
+      )
+   ),
+   s(
+      {
+         trig = '### ',
+         name = '\\subsubsection{}',
+         dscr = 'new subsubsection',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \subsubsection{<>}<>
+
+            <>
+         ]],
+         {
+            i(1),
+            d(2, label_text, 1, { user_args = { 'sec:' } }),
+            i(0),
+         }
       )
    ),
 }

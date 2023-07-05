@@ -39,7 +39,7 @@ local autosnippets = {
          name = '\\ln',
          dscr = 'ln',
       },
-      { t('\\ln') }
+      t('\\ln')
    ),
    tex.ms(
       {
@@ -47,7 +47,7 @@ local autosnippets = {
          name = '\\log',
          dscr = 'log',
       },
-      { t('\\log') }
+      t('\\log')
    ),
    tex.ms(
       {
@@ -55,7 +55,7 @@ local autosnippets = {
          name = '\\exp',
          dscr = 'exp',
       },
-      { t('\\exp') }
+      t('\\exp')
    ),
    tex.ms(
       {

@@ -119,7 +119,7 @@ local autosnippets = {
    ),
    tex.ms(
       {
-         trig = 'in',
+         trig = 'in', -- no need to define inf, infty
          name = '\\in',
          dscr = 'element of',
       },
@@ -190,11 +190,12 @@ local autosnippets = {
       },
       { t('\\sup') }
    ),
-   tex.ms(
+   tex.ms( -- here for completeness, will always be trigerred by `in`
       {
          trig = 'inf',
          name = '\\inf',
          dscr = 'infimum',
+         wordTrig = true,
       },
       { t('\\inf') }
    ),

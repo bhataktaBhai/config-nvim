@@ -1,6 +1,7 @@
 local M = {}
 
 local ls = require('luasnip')
+local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
 local sn = ls.snippet_node
@@ -14,7 +15,12 @@ function M.dedent_visual(_, parent)
 end
 
 function M.dynamic_visual(_, parent)
-   return sn(nil, { i(1, parent.snippet.env.LS_SELECT_DEDENT) })
+   local selection = parent.snippet.env.LS_SELECT_RAW
+   if #selection == 0 then
+      return sn(nil, i(1, parent.snippet.env.LS_SELECT_RAW))
+   else
+      return sn(nil, t(parent.snippet.env.LS_SELECT_RAW))
+   end
 end
 
 function M.visual_node()

@@ -15,7 +15,7 @@ return {}, {
       },
       fmta(
          [[
-            documentclass[12pt]{article}
+            \documentclass[12pt]{article}
             \input{<>}
 
             \title{<>}

@@ -41,7 +41,7 @@ for english, greek in pairs(english_to_greek) do
          name = '\\' .. greek,
          dscr = 'lowercase ' .. greek,
       },
-      { t('\\' .. greek) }
+      t('\\' .. greek)
    )
    local upper_english = english:upper()
    local upper_greek = greek:gsub('^%l', string.upper)
@@ -55,7 +55,7 @@ for english, greek in pairs(english_to_greek) do
          { trig = ':' .. upper_english },
          { trig = ':' .. english },
       },
-      { t('\\' .. upper_greek) }
+      t('\\' .. upper_greek)
    )
 end
 
