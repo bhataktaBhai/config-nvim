@@ -45,7 +45,7 @@ local autosnippets = {
          trig = 'mm',
          dscr = 'autotriggerred inline math environment',
       },
-      { t"$", vn(), i(1), t"$", i(0) }
+      { t'$', vn(), i(1), t'$', i(0) }
    ),
    s(
       {

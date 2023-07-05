@@ -1,9 +1,9 @@
-local ls = require("luasnip")
+local ls = require('luasnip')
 local t = ls.text_node
 local i = ls.insert_node
-local fmta = require("luasnip.extras.fmt").fmta
+local fmta = require('luasnip.extras.fmt').fmta
 
-local tex = require("LuaSnip.tex.util")
+local tex = require('LuaSnip.tex.util')
 
 local autosnippets = {
    -- true and false

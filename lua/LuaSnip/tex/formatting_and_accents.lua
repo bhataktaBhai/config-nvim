@@ -1,8 +1,8 @@
-local ls = require("luasnip")
+local ls = require('luasnip')
 local i = ls.insert_node
 local f = ls.function_node
-local extras = require("luasnip.extras")
-local fmta = require("luasnip.extras.fmt").fmta
+local extras = require('luasnip.extras')
+local fmta = require('luasnip.extras.fmt').fmta
 
 local tex = require('LuaSnip.tex.util')
 

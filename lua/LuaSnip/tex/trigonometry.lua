@@ -1,4 +1,4 @@
-local ls = require("luasnip")
+local ls = require('luasnip')
 local t = ls.text_node
 
 local tex = require('LuaSnip.tex.util')

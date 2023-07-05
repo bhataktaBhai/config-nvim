@@ -1,4 +1,4 @@
-local ls = require("luasnip")
+local ls = require('luasnip')
 local s = ls.snippet
 local ms = ls.multi_snippet
 local conditions = require('luasnip.extras.conditions')
