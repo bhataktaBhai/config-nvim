@@ -21,6 +21,11 @@ return {
       'PeterRincker/vim-argumentative',
       event = 'VeryLazy',
    },
+   {
+      'kylechui/nvim-surround',
+      event = 'VeryLazy',
+      opts = {},
+  },
    -- {
    --    'echasnovski/mini.pairs',
    --    event = 'VeryLazy',
