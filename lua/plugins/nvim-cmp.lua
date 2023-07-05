@@ -7,6 +7,7 @@ return {
          'hrsh7th/cmp-nvim-lsp',
          'hrsh7th/cmp-buffer',
          'hrsh7th/cmp-path',
+         'hrsh7th/cmp-omni',
          'saadparwaiz1/cmp_luasnip',
       },
       event = 'InsertEnter',
@@ -23,8 +24,9 @@ return {
             },
             sources = {
                { name = 'nvim_lsp' },
-               { name = 'buffer' },
+               { name = 'omni' },
                { name = 'luasnip' },
+               { name = 'buffer' },
             },
             mapping = cmp.mapping.preset.insert({
                ['<C-n>'] = cmp.mapping.select_next_item(),
