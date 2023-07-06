@@ -33,7 +33,7 @@ M.math_snippet = function(context, nodes, opts)
       context = { trig = context }
    end
    context = vim.tbl_extend('force', {
-         condition = M.in_mathzone * -M.in_command,
+         condition = M.in_mathzone - M.in_command,
          wordTrig = false,
       }, context or {})
    return s(context, nodes, opts)
@@ -44,7 +44,7 @@ M.text_snippet = function(context, nodes, opts)
       context = { trig = context }
    end
    context = vim.tbl_extend('force', {
-      condition = -M.in_mathzone * -M.in_command,
+      condition = -M.in_mathzone - M.in_command,
    }, context or {})
    return s(context, nodes, opts)
 end
@@ -52,7 +52,7 @@ end
 M.math_multi_snippet = function(contexts, nodes, opts)
    local common = contexts.common or {}
    common = vim.tbl_extend('force', {
-      condition = M.in_mathzone * -M.in_command,
+      condition = M.in_mathzone - M.in_command,
       wordTrig = false,
    }, common)
    contexts.common = common

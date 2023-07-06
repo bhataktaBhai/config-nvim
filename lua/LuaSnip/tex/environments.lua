@@ -2,6 +2,7 @@ local ls = require('luasnip')
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
+local f = ls.function_node
 local sn = ls.snippet_node
 local d = ls.dynamic_node
 local ms = ls.multi_snippet
@@ -12,6 +13,7 @@ local k = require('luasnip.nodes.key_indexer').new_key
 
 local line_begin = require('luasnip.extras.conditions.expand').line_begin
 
+local tex = require('LuaSnip.tex.util')
 local util = require('LuaSnip.util')
 local vn = util.visual_node
 local ivn = util.indent_visual_node
@@ -46,6 +48,17 @@ local autosnippets = {
          dscr = 'autotriggerred inline math environment',
       },
       { t'$', vn(), i(1), t'$', i(0) }
+   ),
+   tex.ts(
+      {
+         trig = '(%A)([b-zB-HJ-Z])(%A)',
+         dscr = 'auto mathmode for one-letter variables',
+         trigEngine = 'pattern',
+         wordTrig = false,
+      },
+      f(function (_, snip)
+         return snip.captures[1] .. '$' .. snip.captures[2] .. '$' .. snip.captures[3]
+      end)
    ),
    s(
       {
@@ -302,11 +315,15 @@ local autosnippets = {
       },
       fmta(
          [[
-            \begin{problem}
+            \begin{problem}<><>
                 <><>
             \end{problem}
          ]],
-         { ivn(), i(0) }
+         {
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { 'prb:' } }),
+            ivn(), i(0)
+         }
       )
    ),
    s(
