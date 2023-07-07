@@ -18,6 +18,8 @@ return {
          let.vimtex_view_skim_activate = 1
          let.vimtex_view_skim_sync = 1
 
+         let.vimtex_imaps_enabled = 0
+
          local math_toggle = {}
          math_toggle['$'] = '\\['
          math_toggle['\\['] = 'align*'

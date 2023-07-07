@@ -24,22 +24,10 @@ return {
                },
             },
          },
-         keymap = {
-            -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-            -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-            -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-            -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-            -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-            -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-            -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-            -- vim.keymap.set('n', '<space>wl', function()
-            -- print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-            -- end, bufopts)
-            -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-            -- vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-            -- vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-            -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-            -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+         global_keymap = {
+            ['<leader>e'] = vim.diagnostic.open_float,
+         },
+         on_attach_keymap = {
             ['gD'] = vim.lsp.buf.declaration,
             ['gd'] = vim.lsp.buf.definition,
             ['K'] = vim.lsp.buf.hover,
@@ -55,8 +43,14 @@ return {
          }
       },
       config = function(_, opts)
+         vim.diagnostic.config({
+            virtual_text = false,
+         })
+         for k, v in pairs(opts.global_keymap or {}) do
+            vim.keymap.set('n', k, v, { remap = false, silent = true })
+         end
          local function on_attach (_, bufnr)
-            for k, v in pairs(opts.keymap or {}) do
+            for k, v in pairs(opts.on_attach_keymap or {}) do
                vim.keymap.set('n', k, v, { remap = false, silent = true, buffer = bufnr })
             end
          end

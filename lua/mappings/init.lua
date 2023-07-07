@@ -1,18 +1,21 @@
 local map = vim.keymap.set
 local opts = {remap = false, silent = true}
 
+local function nmap(lhs, rhs, opt)
+   map('n', lhs, rhs, opt)
+end
+local function imap(lhs, rhs, opt)
+   map('i', lhs, rhs, opt)
+end
+local function vmap(lhs, rhs, opt)
+   map('v', lhs, rhs, opt)
+end
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
+nmap('<leader>', '<Nop>', opts)
+nmap('<localleader>', '<Nop>', opts)
 
-local function nmap(lhs, rhs, opts)
-   map('n', lhs, rhs, opts)
-end
-local function imap(lhs, rhs, opts)
-   map('i', lhs, rhs, opts)
-end
-local function vmap(lhs, rhs, opts)
-   map('v', lhs, rhs, opts)
-end
 -- For forcing myself to use hjkl and moving between windows.
 nmap('<Up>', '<C-w>k', opts)
 nmap('<Down>', '<C-w>j', opts)
