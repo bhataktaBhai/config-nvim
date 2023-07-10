@@ -62,7 +62,7 @@ local autosnippets = {
       {
          common = { name = '\\implies', dscr = 'logical implication' },
          { trig = 'imp' },
-         { trig = '=>' },
+         { trig = '=.' },
       },
       { t('\\implies') }
    ),
@@ -93,7 +93,7 @@ local autosnippets = {
    ),
    tex.ms(
       {
-         trig = 'ee',
+         trig = 'EE',
          name = '\\exists',
          dscr = 'existential quantifier',
       },

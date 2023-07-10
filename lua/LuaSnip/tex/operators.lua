@@ -4,7 +4,6 @@ local t = ls.text_node
 local tex = require('LuaSnip.tex.util')
 
 local autosnippets = {
-   -- inequalities
    tex.ms(',=', t('\\leq')),
    tex.ms('.=', t('\\geq')),
    tex.ms('/=', t('\\neq')),

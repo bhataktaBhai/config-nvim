@@ -17,7 +17,7 @@ local autosnippets = {
    ),
    tex.ms(
       {
-         trig = 'si',
+         trig = 'sii', -- should not trigger before `sin`
          name = '\\si{} (SI unit)',
          dscr = 'si{} (SI unit)',
       },

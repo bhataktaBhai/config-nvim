@@ -4,6 +4,8 @@ local ms = ls.multi_snippet
 local conditions = require('luasnip.extras.conditions')
 local make_condition = conditions.make_condition
 
+local ts_utils = require('nvim-treesitter.ts_utils')
+
 local M = {}
 
 M.in_mathzone = make_condition(function()
@@ -62,5 +64,33 @@ end
 M.ms = M.math_snippet
 M.ts = M.text_snippet
 M.mms = M.math_multi_snippet
+
+function M.get_section ()
+   local node = ts_utils.get_node_at_cursor()
+   if node == nil then
+      error('No node at cursor')
+   end
+   local parent = node:parent()
+   while parent ~= nil and node:type() ~= 'section' do
+      node = parent
+      parent = node:parent()
+   end
+   if node == node:tree():root() then
+      return nil
+   end
+   return node
+end
+
+function M.get_section_name ()
+   local section_node = M.get_section()
+   if section_node == nil then
+      return nil
+   end
+   local name_node = section_node:child(0)
+   if name_node == nil then
+      return nil
+   end
+   return name_node:text()
+end
 
 return M
