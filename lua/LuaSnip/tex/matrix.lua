@@ -5,6 +5,7 @@ local sn = ls.snippet_node
 local isn = ls.indent_snippet_node
 local d = ls.dynamic_node
 local c = ls.choice_node
+local r = ls.restore_node
 local fmta = require('luasnip.extras.fmt').fmta
 
 local tex = require('LuaSnip.tex.util')
@@ -68,6 +69,24 @@ local autosnippets = {
             \end{pmatrix}
          ]],
          c(1, { matrix(2, 2), i(1), matrix(2, 2), matrix(3, 3) })
+      )
+   ),
+   tex.ms(
+      {
+         trig = 'css',
+         name = '\\begin{cases}…\\end{cases}',
+         dscr = 'autotriggerred cases environment',
+      },
+      fmta(
+         [[
+            \begin{cases}
+                <><>
+            \end{cases}
+         ]],
+         {
+            c(1, { matrix(2, 2), matrix(3, 2), i(1) }),
+            i(2),
+         }
       )
    ),
 }

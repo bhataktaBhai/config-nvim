@@ -7,6 +7,15 @@ local fmta = require('luasnip.extras.fmt').fmta
 local tex = require('LuaSnip.tex.util')
 
 local autosnippets = {
+   -- autopairing
+   tex.ms(
+      {
+         trig = '(',
+         name = '()',
+         dscr = 'parentheses',
+      },
+      { t'(', i(1), t')' }
+   ),
    -- dynamic delimiters
    tex.ms(
       {

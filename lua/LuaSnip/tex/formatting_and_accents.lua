@@ -1,7 +1,7 @@
 local ls = require('luasnip')
+local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
-local extras = require('luasnip.extras')
 local fmta = require('luasnip.extras.fmt').fmta
 
 local tex = require('LuaSnip.tex.util')
@@ -12,9 +12,8 @@ local autosnippets = {
          trig = 'bb',
          name = '\\textbf{}',
          dscr = 'boldface text mode',
-         -- condition = -tex.in_mathzone,
       },
-      fmta('\\textbf{<>}<>', { i(1), i(0) })
+      fmta('\\textbf{<>}', i(1))
    ),
    tex.ts(
       {
@@ -22,7 +21,7 @@ local autosnippets = {
          name = '\\textit{}',
          dscr = 'italic text mode',
       },
-      fmta('\\textit{<>}<>', { i(1), i(0) })
+      fmta('\\textit{<>}', i(1))
    ),
    tex.ts(
       {
@@ -30,7 +29,7 @@ local autosnippets = {
          name = '\\emph{}',
          dscr = 'emphasis text mode',
       },
-      fmta('\\emph{<>}<>', { i(1), i(0) })
+      fmta('\\emph{<>}', i(1))
    ),
    tex.ts(
       {
@@ -38,7 +37,7 @@ local autosnippets = {
          name = '\\texttt{}',
          dscr = 'typewriter text mode',
       },
-      fmta('\\texttt{<>}<>', { i(1), i(0) })
+      fmta('\\texttt{<>}', i(1))
    ),
    tex.ms(
       {
@@ -46,7 +45,7 @@ local autosnippets = {
          name = '\\mathbb{}',
          dscr = 'blackboard bold math mode',
       },
-      fmta('\\mathbb{<>}<>', { i(1), i(0) })
+      fmta('\\mathbb{<>}', i(1))
    ),
    tex.ms(
       {
@@ -54,7 +53,7 @@ local autosnippets = {
          name = '\\mathcal{}',
          dscr = 'mathcal',
       },
-      fmta('\\mathcal{<>}<>', { i(1), i(0) })
+      fmta('\\mathcal{<>}', i(1))
    ),
    tex.ms(
       {
@@ -62,7 +61,7 @@ local autosnippets = {
          name = '\\mathscr{}',
          dscr = 'mathscr',
       },
-      fmta('\\mathscr{<>}<>', { i(1), i(0) })
+      fmta('\\mathscr{<>}', i(1))
    ),
    tex.ms(
       {
@@ -70,7 +69,7 @@ local autosnippets = {
          name = '\\mathfrak{}',
          dscr = 'mathfrak',
       },
-      fmta('\\mathfrak{<>}<>', { i(1), i(0) })
+      fmta('\\mathfrak{<>}', i(1))
    ),
    tex.ms(
       {
@@ -78,7 +77,7 @@ local autosnippets = {
          name = '\\mathrm{}',
          dscr = 'mathrm',
       },
-      fmta('\\mathrm{<>}<>', { i(1), i(0) })
+      fmta('\\mathrm{<>}', i(1))
    ),
    tex.ms(
       {
@@ -86,7 +85,7 @@ local autosnippets = {
          name = '\\textrm{}',
          dscr = 'textrm',
       },
-      fmta('\\textrm{<>}<>', { i(1), i(0) })
+      fmta('\\textrm{<>}', i(1))
    ),
    tex.ms(
       {
@@ -94,7 +93,7 @@ local autosnippets = {
          name = '\\text{}',
          dscr = 'text in math mode',
       },
-      fmta('\\text{<>}<>', { i(1), i(0) })
+      fmta('\\text{<>}', i(1))
    ),
    tex.ms(
       {
@@ -102,7 +101,15 @@ local autosnippets = {
          name = '^{}',
          dscr = 'superscript',
       },
-      fmta('^{<>}<>', { i(1), i(0) })
+      fmta('^{<>}', i(1))
+   ),
+   tex.ms(
+      {
+         trig = 'nv',
+         name = '^{-1}',
+         dscr = 'inverse (superscript -1)',
+      },
+      t'^{-1}'
    ),
    tex.ms(
       {
@@ -110,7 +117,7 @@ local autosnippets = {
          name = '_{}',
          dscr = 'subscript',
       },
-      fmta('_{<>}<>', { i(1), i(0) })
+      fmta('_{<>}', i(1))
    ),
    tex.ms(
       {
@@ -119,9 +126,9 @@ local autosnippets = {
          dscr = 'auto numerical subscript',
          trigEngine = 'pattern',
       },
-      fmta('<>', { f(function(_, snip)
+      f(function(_, snip)
          return snip.captures[1] .. '_{' .. snip.captures[2] .. '}'
-      end) })
+      end)
    ),
    tex.ms(
       {
@@ -134,9 +141,9 @@ local autosnippets = {
             -- tex.ms default is tex.in_mathzone * -tex.in_command
             -- but \alphahat should trigger
       },
-      fmta('\\hat{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\hat{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -144,7 +151,7 @@ local autosnippets = {
          name = 'prefix hat',
          dscr = 'prefix hat',
       },
-      fmta('\\hat{<>}<>', { i(1), i(0) })
+      fmta('\\hat{<>}', i(1))
    ),
    tex.ms(
       {
@@ -155,9 +162,9 @@ local autosnippets = {
          priority = 10000,
          condition = tex.in_mathzone,
       },
-      fmta('\\tilde{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\tilde{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -165,7 +172,7 @@ local autosnippets = {
          name = 'prefix tilde',
          dscr = 'prefix tilde',
       },
-      fmta('\\tilde{<>}<>', { i(1), i(0) })
+      fmta('\\tilde{<>}', i(1))
    ),
    tex.ms(
       {
@@ -176,9 +183,9 @@ local autosnippets = {
          priority = 10000,
          condition = tex.in_mathzone,
       },
-      fmta('\\bm{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\bm{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -186,7 +193,7 @@ local autosnippets = {
          name = 'prefix bm',
          dscr = 'prefix bm',
       },
-      fmta('\\bm{<>}<>', { i(1), i(0) })
+      fmta('\\bm{<>}', i(1))
    ),
    tex.ms(
       {
@@ -197,9 +204,9 @@ local autosnippets = {
          priority = 10000,
          condition = tex.in_mathzone,
       },
-      fmta('\\overline{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\overline{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -207,7 +214,7 @@ local autosnippets = {
          name = 'prefix overline',
          dscr = 'prefix overline',
       },
-      fmta('\\overline{<>}<>', { i(1), i(0) })
+      fmta('\\overline{<>}', i(1))
    ),
    tex.ms(
       {
@@ -218,9 +225,9 @@ local autosnippets = {
          priority = 10000,
          condition = tex.in_mathzone,
       },
-      fmta('\\ddot{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\ddot{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -229,7 +236,7 @@ local autosnippets = {
          dscr = 'prefix ddot',
          priority = 5000,
       },
-      fmta('\\ddot{<>}<>', { i(1), i(0) })
+      fmta('\\ddot{<>}', i(1))
    ),
    tex.ms(
       {
@@ -240,9 +247,9 @@ local autosnippets = {
          priority = 2000,
          condition = tex.in_mathzone,
       },
-      fmta('\\dot{<>}', { f(function(_, snip)
-         return snip.captures[1]
-      end) })
+      f(function(_, snip)
+         return '\\dot{' .. snip.captures[1] .. '}'
+      end)
    ),
    tex.ms(
       {
@@ -250,7 +257,7 @@ local autosnippets = {
          name = 'prefix dot',
          dscr = 'prefix dot',
       },
-      fmta('\\dot{<>}<>', { i(1), i(0) })
+      fmta('\\dot{<>}', i(1))
    ),
 }
 

@@ -388,6 +388,7 @@ local autosnippets = {
          { i(0) }
       )
    ),
+   -- cases moved to matrix.lua
    -- sections
    s(
       {
