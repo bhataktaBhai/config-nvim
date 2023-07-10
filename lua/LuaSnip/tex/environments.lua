@@ -26,6 +26,8 @@ local function surround_if_nonempty (jump_index, left, right, node, node_referen
       n(node_reference, right),
    })
 end
+local sin = surround_if_nonempty
+
 local function label_text (argnodes, _, _, label_header)
    local node
    if argnodes[1][1] ~= '' then
@@ -39,9 +41,89 @@ local function label_text (argnodes, _, _, label_header)
    return surround_if_nonempty(nil, ' \\label{' .. label_header, '}', node)
 end
 
-local sin = surround_if_nonempty
+local theorem_environments = {
+   theorem = {
+      trig = 'tm',
+      label_header = 'thm:',
+   },
+   lemma = {
+      trig = 'lm',
+      label_header = 'thm:',
+   },
+   proposition = {
+      trig = 'prp',
+      label_header = 'thm:',
+   },
+   corollary = {
+      trig = 'crl',
+      label_header = 'thm:',
+   },
+   definition = {
+      trig = 'df',
+      label_header = 'def:',
+   },
+   axiom = {
+      trig = 'ax',
+      label_header = 'def:',
+   },
+   problem = {
+      trig = 'pb',
+      label_header = 'prb:',
+   },
+}
 
-local autosnippets = {
+local visual_enviroments = {
+   proof = 'pf',
+   remark = 'rm',
+   example = 'xm',
+   ['align*'] = 'aln',
+   solution = 'sl',
+}
+
+local autosnippets = {}
+for name, info in pairs(theorem_environments) do
+   autosnippets[#autosnippets+1] = s(
+      {
+         trig = info.trig,
+         dscr = 'autotriggerred ' .. name .. ' environment',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \begin{<>}<><>
+                <><>
+            \end{<>}
+         ]],
+         {
+            t(name),
+            sin(1, '[', ']', i(1, '', { key = 'name' })),
+            d(2, label_text, k('name'), { user_args = { info.label_header } }),
+               ivn(), i(0),
+            t(name),
+         }
+      )
+   )
+end
+
+for name, trig in pairs(visual_enviroments) do
+   autosnippets[#autosnippets+1] = s(
+      {
+         trig = trig,
+         dscr = 'autotriggerred ' .. name .. ' environment',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \begin{<>}
+                <><>
+            \end{<>}
+         ]],
+         { t(name), ivn(), i(0), t(name) }
+      )
+   )
+end
+
+autosnippets = vim.tbl_extend('force', autosnippets, {
    s(
       {
          trig = 'mm',
@@ -105,112 +187,6 @@ local autosnippets = {
    ),
    s(
       {
-         trig = 'aln',
-         dscr = 'autotriggerred align* environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{align*}
-                <><>
-            \end{align*}
-         ]],
-         { ivn(), i(0) }
-      )
-   ),
-   s(
-      {
-         trig = 'tm',
-         dscr = 'autotriggerred theorem environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{theorem}<><>
-                <><>
-            \end{theorem}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'lm',
-         dscr = 'autotriggerred lemma environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{lemma}<><>
-                <><>
-            \end{lemma}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'prp',
-         dscr = 'autotriggerred proposition environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{proposition}<><>
-                <><>
-            \end{proposition}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'crl',
-         dscr = 'autotriggerred corollary environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{corollary}<><>
-                <><>
-            \end{corollary}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'thm:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'pf',
-         dscr = 'autotriggerred proof environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{proof}
-                <><>
-            \end{proof}
-         ]],
-         { ivn(), i(0) }
-      )
-   ),
-   s(
-      {
          trig = 'spf',
          dscr = 'autotriggerred self proof environment',
          condition = line_begin,
@@ -226,59 +202,6 @@ local autosnippets = {
    ),
    s(
       {
-         trig = 'df',
-         dscr = 'autotriggerred definition environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{definition}<><>
-                <><>
-            \end{definition}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'def:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'ax',
-         dscr = 'autotriggerred axiom environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{axiom}<><>
-                <><>
-            \end{axiom}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'def:' } }),
-            ivn(), i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'xm',
-         dscr = 'autotriggerred example environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{example}
-                <><>
-            \end{example}
-         ]],
-         { ivn(), i(0) }
-      )
-   ),
-   s(
-      {
          trig = 'xl',
          dscr = 'autotriggerred examplelist environment',
          condition = line_begin,
@@ -288,55 +211,6 @@ local autosnippets = {
             \begin{examplelist}
                 \item <><>
             \end{examplelist}
-         ]],
-         { ivn(), i(0) }
-      )
-   ),
-   s(
-      {
-         trig = 'rm',
-         dscr = 'autotriggerred remark environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{remark}
-                <><>
-            \end{remark}
-         ]],
-         { ivn(), i(0) }
-      )
-   ),
-   s(
-      {
-         trig = 'pb',
-         dscr = 'autotriggerred problem environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{problem}<><>
-                <><>
-            \end{problem}
-         ]],
-         {
-            sin(1, '[', ']', i(1, '', { key = 'name' })),
-            d(2, label_text, k('name'), { user_args = { 'prb:' } }),
-            ivn(), i(0)
-         }
-      )
-   ),
-   s(
-      {
-         trig = 'sl',
-         dscr = 'autotriggerred solution environment',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \begin{solution}
-                <><>
-            \end{solution}
          ]],
          { ivn(), i(0) }
       )
@@ -392,64 +266,28 @@ local autosnippets = {
    -- sections
    s(
       {
-         trig = '# ',
-         name = '\\section{}',
-         dscr = 'new section',
+         trig = '(#+) ',
+         name = '\\[sub]section{}',
+         dscr = 'new [sub]section',
          condition = line_begin,
+         trigEngine = 'pattern',
       },
       fmta(
          [[
-            \section{<>}<>
+            \<>section{<>}<>
 
             <>
          ]],
          {
+            f(function (_, snip)
+               return string.rep('sub', #snip.captures[1] - 1)
+            end),
             i(1),
             d(2, label_text, 1, { user_args = { 'sec:' } }),
             i(0),
          }
       )
    ),
-   s(
-      {
-         trig = '## ',
-         name = '\\subsection{}',
-         dscr = 'new subsection',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \subsection{<>}<>
-
-            <>
-         ]],
-         {
-            i(1),
-            d(2, label_text, 1, { user_args = { 'sec:' } }),
-            i(0),
-         }
-      )
-   ),
-   s(
-      {
-         trig = '### ',
-         name = '\\subsubsection{}',
-         dscr = 'new subsubsection',
-         condition = line_begin,
-      },
-      fmta(
-         [[
-            \subsubsection{<>}<>
-
-            <>
-         ]],
-         {
-            i(1),
-            d(2, label_text, 1, { user_args = { 'sec:' } }),
-            i(0),
-         }
-      )
-   ),
-}
+})
 
 return {}, autosnippets
