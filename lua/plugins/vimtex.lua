@@ -20,6 +20,11 @@ return {
 
          let.vimtex_imaps_enabled = 0
 
+         let.vimtex_fold_enabled = 1
+         let.vimtex_fold_types = {
+            comments = { enabled = 1 },
+         }
+
          local math_toggle = {}
          math_toggle['$'] = '\\['
          math_toggle['\\['] = 'align*'

@@ -5,7 +5,7 @@ return {
       'numToStr/Comment.nvim',
       keys = {'<leader>c', '<leader>b', '<localleader>c', '<localleader>b'},
       opts = {
-         ignore = '^$',
+         -- ignore = '^$',
          toggler = {
             line = '<leader>c',
             block = '<leader>b',
