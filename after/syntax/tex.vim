@@ -1,7 +1,7 @@
 " syntax match texMathSymbol /\\set{\%([^}]*}\)\@=/ conceal cchar={
 " syntax match texMathSymbol /\%(\\set{[^}]*\)\@<=}/ conceal cchar=}
 " syntax match texMathSymbol /\%(\\set{\%([^{}]*|\%({[^{}]*}\)\)*\)\@<=}/ conceal cchar=}
-syntax match texMathCmd /\\set\>/ contained conceal
+" syntax match texMathCmd /\\set\>/ contained conceal
 
 " These are concealed using Vimtex's conceal feature
 " syntax match texMathSymbol /\\R\>/ conceal cchar=ℝ

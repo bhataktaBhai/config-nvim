@@ -7,6 +7,13 @@ local f = ls.function_node
 local sn = ls.snippet_node
 local isn = ls.indent_snippet_node
 
+function M.extend(array1, array2)
+   for _, v in ipairs(array2) do
+      array1[#array1 + 1] = v
+   end
+   return array1
+end
+
 function M.raw_visual(_, parent)
    return parent.snippet.env.LS_SELECT_RAW
 end

@@ -3,7 +3,7 @@ return {
    -- version, dependencies, build, lazy, priority, cmd, ft, event, keys, opts, init, config
    {
       'numToStr/Comment.nvim',
-      keys = {'<leader>c', '<leader>b', '<localleader>c', '<localleader>b'},
+      keys = { '<leader>c', '<leader>b', '<localleader>c', '<localleader>b' },
       opts = {
          -- ignore = '^$',
          toggler = {
@@ -16,7 +16,6 @@ return {
          },
       },
    },
-   -- 'tree-sitter/tree-sitter',
    {
       'PeterRincker/vim-argumentative',
       event = 'VeryLazy',
@@ -25,15 +24,10 @@ return {
       'kylechui/nvim-surround',
       event = 'VeryLazy',
       opts = {},
-  },
-   -- {
-   --    'echasnovski/mini.pairs',
-   --    event = 'VeryLazy',
-   --    config = true,
-   -- },
-   -- 'dylanaraps/wal',
-   -- {
-   --    'folke/trouble.nvim',
-   --     dependencies = { 'nvim-tree/nvim-web-devicons' },
-   -- },
+   },
+   {
+      'folke/which-key.nvim',
+      event = 'VeryLazy',
+      opts = {},
+   },
 }

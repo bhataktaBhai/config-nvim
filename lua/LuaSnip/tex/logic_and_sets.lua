@@ -227,6 +227,17 @@ local autosnippets = {
          i(5, '\\R'),
       })
    ),
+
+   -- combinatorics
+   tex.ms(
+      {
+         trig = 'bn',
+         name = '\\binom{}{}',
+         dscr = 'binomial coefficient',
+      },
+      fmta('\\binom{<>}{<>}', { i(1, 'n'), i(2, 'r') })
+   ),
+   tex.ms('gv', t('\\given')),
 }
 
 return {}, autosnippets

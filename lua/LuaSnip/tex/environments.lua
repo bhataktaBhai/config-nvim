@@ -28,6 +28,18 @@ local function surround_if_nonempty (jump_index, left, right, node, node_referen
 end
 local sin = surround_if_nonempty
 
+local function label_subheader ()
+   -- local prev_thm_label = tex.prev_theorem_label()
+   -- if prev_thm_label then
+   --    return prev_thm_label:match(':.*:') .. ':'
+   -- end
+   local current_sec_label = tex.current_section_label()
+   if current_sec_label then
+      return current_sec_label:match(':.*'):sub(2) .. ':'
+   end
+   return ''
+end
+
 local function label_text (argnodes, _, _, label_header)
    local node
    if argnodes[1][1] ~= '' then
@@ -38,7 +50,8 @@ local function label_text (argnodes, _, _, label_header)
    else
       node = i(1)
    end
-   return surround_if_nonempty(nil, ' \\label{' .. label_header, '}', node)
+   local subheader = label_header:match('sec') and '' or label_subheader()
+   return surround_if_nonempty(nil, ' \\label{' .. label_header .. subheader, '}', node)
 end
 
 local theorem_environments = {
@@ -76,13 +89,12 @@ local visual_enviroments = {
    proof = 'pf',
    remark = 'rm',
    example = 'xm',
-   ['align*'] = 'aln',
    solution = 'sl',
 }
 
 local autosnippets = {}
 for name, info in pairs(theorem_environments) do
-   autosnippets[#autosnippets+1] = s(
+   autosnippets[#autosnippets + 1] = s(
       {
          trig = info.trig,
          dscr = 'autotriggerred ' .. name .. ' environment',
@@ -106,7 +118,7 @@ for name, info in pairs(theorem_environments) do
 end
 
 for name, trig in pairs(visual_enviroments) do
-   autosnippets[#autosnippets+1] = s(
+   autosnippets[#autosnippets + 1] = s(
       {
          trig = trig,
          dscr = 'autotriggerred ' .. name .. ' environment',
@@ -123,17 +135,36 @@ for name, trig in pairs(visual_enviroments) do
    )
 end
 
-autosnippets = vim.tbl_extend('force', autosnippets, {
+autosnippets = util.extend(autosnippets, {
+   s(
+      {
+         trig = 'aln',
+         dscr = 'autotriggerred align* environment',
+      },
+      fmta(
+         [[
+            \begin{align*}
+                <><>
+            \end{align*}
+         ]], { ivn(), i(0), }
+      )
+   ),
    s(
       {
          trig = 'mm',
          dscr = 'autotriggerred inline math environment',
       },
-      { t'$', vn(), i(1), t'$', i(0) }
+      -- { t'$', vn(), i(1), t'$', i(0) }
+      fmta(
+         [[
+            $<><>$<>
+         ]],
+         { vn(), i(1), i(0) }
+      )
    ),
    tex.ts(
       {
-         trig = '(%A)([b-zB-HJ-Z])(%A)',
+         trig = "([^%a'$%.])([b-zB-HJ-Z])([^%a'$])",
          dscr = 'auto mathmode for one-letter variables',
          trigEngine = 'pattern',
          wordTrig = false,
@@ -142,6 +173,9 @@ autosnippets = vim.tbl_extend('force', autosnippets, {
          return snip.captures[1] .. '$' .. snip.captures[2] .. '$' .. snip.captures[3]
       end)
    ),
+   -- To not trigger mathmode
+   tex.ts('ie', t('\\textit{i.e.}')),
+   tex.ts('eg', t('\\textit{e.g.}')),
    s(
       {
          trig = 'dm',
@@ -161,13 +195,11 @@ autosnippets = vim.tbl_extend('force', autosnippets, {
          common = {
             trig = 'bg',
             dscr = 'begin environment',
-         },
-         {
+         }, {
             dscr = 'auto triggerred begin environment',
             snippetType = 'autosnippet',
             condition = line_begin,
-         },
-         {
+         }, {
             dscr = 'manually triggerred begin environment',
             snippetType = 'snippet',
          },
@@ -202,15 +234,30 @@ autosnippets = vim.tbl_extend('force', autosnippets, {
    ),
    s(
       {
-         trig = 'xl',
-         dscr = 'autotriggerred examplelist environment',
+         trig = 'xs',
+         dscr = 'autotriggerred examples environment',
          condition = line_begin,
       },
       fmta(
          [[
-            \begin{examplelist}
+            \begin{examples}
                 \item <><>
-            \end{examplelist}
+            \end{examples}
+         ]],
+         { ivn(), i(0) }
+      )
+   ),
+   s(
+      {
+         trig = 'itm',
+         dscr = 'autotriggerred itemize environment',
+         condition = line_begin,
+      },
+      fmta(
+         [[
+            \begin{itemize}
+                \item <><>
+            \end{itemize}
          ]],
          { ivn(), i(0) }
       )
@@ -275,7 +322,6 @@ autosnippets = vim.tbl_extend('force', autosnippets, {
       fmta(
          [[
             \<>section{<>}<>
-
             <>
          ]],
          {

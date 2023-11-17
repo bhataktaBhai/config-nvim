@@ -5,6 +5,8 @@ local f = ls.function_node
 local fmta = require('luasnip.extras.fmt').fmta
 
 local tex = require('LuaSnip.tex.util')
+local util = require('LuaSnip.util')
+local vn = util.visual_node
 
 local autosnippets = {
    tex.ts(
@@ -13,7 +15,7 @@ local autosnippets = {
          name = '\\textbf{}',
          dscr = 'boldface text mode',
       },
-      fmta('\\textbf{<>}', i(1))
+      fmta('\\textbf{<><>}', { vn(), i(1) })
    ),
    tex.ts(
       {
@@ -21,7 +23,15 @@ local autosnippets = {
          name = '\\textit{}',
          dscr = 'italic text mode',
       },
-      fmta('\\textit{<>}', i(1))
+      fmta('\\textit{<><>}', { vn(), i(1) })
+   ),
+   tex.ts(
+      {
+         trig = 'tsl',
+         name = '\\textsl{}',
+         dscr = 'slanted text mode',
+      },
+      fmta('\\textsl{<><>}', { vn(), i(1) })
    ),
    tex.ts(
       {
@@ -29,7 +39,7 @@ local autosnippets = {
          name = '\\emph{}',
          dscr = 'emphasis text mode',
       },
-      fmta('\\emph{<>}', i(1))
+      fmta('\\emph{<><>}', { vn(), i(1) })
    ),
    tex.ts(
       {
@@ -37,7 +47,7 @@ local autosnippets = {
          name = '\\texttt{}',
          dscr = 'typewriter text mode',
       },
-      fmta('\\texttt{<>}', i(1))
+      fmta('\\texttt{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -45,7 +55,7 @@ local autosnippets = {
          name = '\\mathbb{}',
          dscr = 'blackboard bold math mode',
       },
-      fmta('\\mathbb{<>}', i(1))
+      fmta('\\mathbb{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -53,7 +63,7 @@ local autosnippets = {
          name = '\\mathcal{}',
          dscr = 'mathcal',
       },
-      fmta('\\mathcal{<>}', i(1))
+      fmta('\\mathcal{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -61,7 +71,7 @@ local autosnippets = {
          name = '\\mathscr{}',
          dscr = 'mathscr',
       },
-      fmta('\\mathscr{<>}', i(1))
+      fmta('\\mathscr{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -69,7 +79,7 @@ local autosnippets = {
          name = '\\mathfrak{}',
          dscr = 'mathfrak',
       },
-      fmta('\\mathfrak{<>}', i(1))
+      fmta('\\mathfrak{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -77,7 +87,7 @@ local autosnippets = {
          name = '\\mathrm{}',
          dscr = 'mathrm',
       },
-      fmta('\\mathrm{<>}', i(1))
+      fmta('\\mathrm{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -85,7 +95,7 @@ local autosnippets = {
          name = '\\textrm{}',
          dscr = 'textrm',
       },
-      fmta('\\textrm{<>}', i(1))
+      fmta('\\textrm{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -93,11 +103,11 @@ local autosnippets = {
          name = '\\text{}',
          dscr = 'text in math mode',
       },
-      fmta('\\text{<>}', i(1))
+      fmta('\\text{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
-         trig = '^',
+         trig = 'sp',
          name = '^{}',
          dscr = 'superscript',
       },
@@ -113,7 +123,7 @@ local autosnippets = {
    ),
    tex.ms(
       {
-         trig = '_',
+         trig = 'sb',
          name = '_{}',
          dscr = 'subscript',
       },
@@ -127,7 +137,7 @@ local autosnippets = {
          trigEngine = 'pattern',
       },
       f(function(_, snip)
-         return snip.captures[1] .. '_{' .. snip.captures[2] .. '}'
+         return snip.captures[1] .. '_' .. snip.captures[2]
       end)
    ),
    tex.ms(
@@ -151,7 +161,7 @@ local autosnippets = {
          name = 'prefix hat',
          dscr = 'prefix hat',
       },
-      fmta('\\hat{<>}', i(1))
+      fmta('\\hat{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -172,7 +182,7 @@ local autosnippets = {
          name = 'prefix tilde',
          dscr = 'prefix tilde',
       },
-      fmta('\\tilde{<>}', i(1))
+      fmta('\\tilde{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -193,7 +203,29 @@ local autosnippets = {
          name = 'prefix bm',
          dscr = 'prefix bm',
       },
-      fmta('\\bm{<>}', i(1))
+      fmta('\\bm{<><>}', { vn(), i(1) })
+   ),
+   tex.ms(
+      {
+         trig = '([\\a-zA-Z]+)ubar',
+         name = 'postfix underline',
+         dscr = 'postfix underline',
+         trigEngine = 'pattern',
+         priority = 40000,
+         condition = tex.in_mathzone,
+      },
+      f(function(_, snip)
+         return '\\underline{' .. snip.captures[1] .. '}'
+      end)
+   ),
+   tex.ms(
+      {
+         trig = 'ubar',
+         name = 'prefix underline',
+         dscr = 'prefix underline',
+         priority = 20000,
+      },
+      fmta('\\underline{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -214,7 +246,7 @@ local autosnippets = {
          name = 'prefix overline',
          dscr = 'prefix overline',
       },
-      fmta('\\overline{<>}', i(1))
+      fmta('\\overline{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -236,7 +268,7 @@ local autosnippets = {
          dscr = 'prefix ddot',
          priority = 5000,
       },
-      fmta('\\ddot{<>}', i(1))
+      fmta('\\ddot{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -257,7 +289,7 @@ local autosnippets = {
          name = 'prefix dot',
          dscr = 'prefix dot',
       },
-      fmta('\\dot{<>}', i(1))
+      fmta('\\dot{<><>}', { vn(), i(1) })
    ),
 }
 

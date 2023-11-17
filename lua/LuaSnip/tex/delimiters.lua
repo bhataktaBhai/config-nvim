@@ -5,75 +5,61 @@ local i = ls.insert_node
 local fmta = require('luasnip.extras.fmt').fmta
 
 local tex = require('LuaSnip.tex.util')
+local vn = require('LuaSnip.util').visual_node
 
 local autosnippets = {
    -- autopairing
    tex.ms(
-      {
-         trig = '(',
-         name = '()',
-         dscr = 'parentheses',
-      },
-      { t'(', i(1), t')' }
-   ),
-   -- dynamic delimiters
-   tex.ms(
-      {
-         trig = 'ddp',
-         name = '\\parentheses{}',
-         dscr = 'dynamic parentheses',
-      },
-      fmta('\\paren{<>}', { i(1) })
+      '(',
+      { t'(', vn(), i(1), t')' }
    ),
    tex.ms(
-      {
-         trig = 'ddb',
-         name = '\\brackets{}',
-         dscr = 'dynamic brackets',
-      },
-      fmta('\\brack{<>}', { i(1) })
+      '[',
+      { t'[', vn(), i(1), t']' }
    ),
    tex.ms(
-      {
-         trig = 'ddc',
-         name = '\\curly{}',
-         dscr = 'dynamic curly braces',
-      },
-      fmta('\\curly{<>}', { i(1) })
-   ),
-   -- novel delimiters
-   tex.ms(
-      {
-         trig = '<<',
-         name = '\\angled{}',
-         dscr = 'angled brackets (dynamic)',
-      },
-      fmta('\\angled{<>}', { i(1) })
-   ),
-   tex.ms(
-      {
-         trig = '|',
-         name = '\\abs{}',
-         dscr = 'absolute value (dynamic)',
-      },
-      fmta('\\abs{<>}', { i(1) })
-   ),
-   tex.ms(
-      {
-         trig = '\\abs{|',
-         name = '\\norm{}',
-         dscr = 'norm (dynamic)',
-         priority = 10000, -- to override `|`
-      },
-      t('\\norm{')
+      '{',
+      { t'{', vn(), i(1), t'}' }
    ),
    s(
       {
          trig = '\\{',
-         name = '\\{\\}',
-         dscr = 'escaped curly braces',
+         priority = 10000, -- to override `{`
       },
-      fmta('\\{<>\\}', { i(1) })
+      { t'\\{', vn(), i(1), t'\\}' }
+   ),
+   -- dynamic delimiters
+   tex.ms(
+      'ddp',
+      { t'\\left(', vn(), i(1), t'\\right)' }
+   ),
+   tex.ms(
+      'ddb',
+      { t'\\left[', vn(), i(1), t'\\right]' }
+   ),
+   tex.ms(
+      'ddc',
+      { t'\\left\\{', vn(), i(1), t'\\right\\}' }
+   ),
+   -- novel delimiters
+   tex.ms(
+      '<<',
+      fmta('\\angled{<><>}', { vn(), i(1) })
+   ),
+   tex.ms(
+      '|',
+      fmta('\\abs{<><>}', { vn(), i(1) })
+   ),
+   tex.ms(
+      {
+         trig = '\\abs{|',
+         priority = 10000, -- to override `|`
+      },
+      t('\\norm{')
+   ),
+   tex.ms(
+      'md',
+      t('\\mid')
    ),
 }
 

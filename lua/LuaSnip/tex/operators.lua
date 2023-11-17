@@ -12,6 +12,7 @@ local autosnippets = {
    tex.ms('..', t('\\cdot')),
    tex.ms('\\cdot.', t('\\dots')),
    tex.ts('...', t('\\dots')),
+   tex.ms('.,', t('..')),
 }
 
 return {}, autosnippets

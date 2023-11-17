@@ -4,6 +4,7 @@ local t = ls.text_node
 local tex = require('LuaSnip.tex.util')
 
 local trig_functions = {
+   -- trigger = function name
    cos  = 'cos',    sin  = 'sin',    tan  = 'tan',
    sec  = 'sec',    csc  = 'csc',    cot  = 'cot',
    acos = 'arccos', asin = 'arcsin', atan = 'arctan',
