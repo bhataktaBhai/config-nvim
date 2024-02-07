@@ -32,6 +32,7 @@ local autosnippets = {
          f(close, {1}),
       })
    ),
+   tex.ms('ii', t'^{(i)}'),
 }
 
 return {}, autosnippets

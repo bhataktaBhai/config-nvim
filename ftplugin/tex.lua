@@ -18,7 +18,7 @@
 local opts = {
    -- statementStyle = { bold = false },
    overrides = function (colors)
-      local math_mode = { fg = colors.palette.lotusBlue2 }
+      local math_mode = { fg = colors.palette.lotusBlue2, bold = false }
       local nonbold   = { fg = colors.palette.oniViolet, bold = false }
       return {
          texMathZone = math_mode,
@@ -34,14 +34,13 @@ local opts = {
 require('kanagawa').setup(opts)
 vim.cmd[[colorscheme kanagawa]]
 
-
 require('lualine').setup({
    options = {
-      theme = 'tokyonight'--'carbonfox',
+      theme = 'kanagawa',
    },
-   sections = {
-      lualine_x = {'encoding', 'fileformat', function()
-         return ''
-      end},
-   },
+   -- sections = {
+   --    lualine_x = {'encoding', 'fileformat', function()
+   --       return ''
+   --    end},
+   -- },
 })

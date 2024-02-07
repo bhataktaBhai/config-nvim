@@ -78,7 +78,7 @@ return {
                      and '<Plug>luasnip-expand-or-jump'
                      or '<tab>'
             end,
-            expr = true, silent = true, mode = 'i'
+            expr = true, silent = true, mode = 'i', remap = true,
          },
          { '<tab>', function() require('luasnip').jump(1) end, mode = 's' },
          { '<s-tab>', function() require('luasnip').jump(-1) end, mode = {'i', 's'} },
@@ -96,6 +96,7 @@ return {
    },
    {
       'zbirenbaum/copilot.lua',
+      commit = '406f148',
       build = ':Copilot auth',
       cmd = 'Copilot',
       event = 'InsertEnter',

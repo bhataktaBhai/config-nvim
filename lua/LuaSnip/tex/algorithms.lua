@@ -7,6 +7,7 @@ local line_begin = require('luasnip.extras.conditions.expand').line_begin
 
 local tex = require('LuaSnip.tex.util')
 local in_algo_rithm = tex.in_env('algorithmic') + tex.in_env('algo')
+                        + tex.in_env('algox')
 
 local autosnippets = {
    s(

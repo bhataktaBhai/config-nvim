@@ -26,7 +26,7 @@ M.in_label = make_condition(function()
    end
    local expr = current_node
    while expr do
-      if expr:type():sub(#'label') == 'label' then
+      if expr:type():sub(1, #'label') == 'label' then
          return true
       end
       expr = expr:parent()
@@ -72,7 +72,7 @@ M.text_snippet = function(context, nodes, opts)
    end
 
    if context.condition ~= nil then
-      context.condition = context.condition * (-M.in_mathzone - M.in_command)
+      context.condition = context.condition - M.in_mathzone - M.in_command
    else
       context.condition = -M.in_mathzone - M.in_command
    end

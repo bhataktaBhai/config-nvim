@@ -22,21 +22,9 @@ return {
       'rebelot/kanagawa.nvim',
       lazy = false,
       priority = 999,
-      -- opts = {
-      --    overrides = function (colors)
-      --       local math_mode = { fg = colors.palette.lotusBlue2 }
-      --       local nonbold   = { italic = false }
-      --       return {
-      --          texMathZone = math_mode,
-      --          texMathDelimZone = math_mode,
-      --          texMathDelim = math_mode,
-      --          Conceal = math_mode,
-      --          texTabularChar = math_mode, -- for ampersand
-      --          texMathOper = math_mode,
-      --          texCmd = nonbold,
-      --       }
-      --    end,
-      -- },
+      opts = {
+         colors = { theme = { all = { ui = { bg_gutter = 'none' } } } },
+      },
       config = function(_, opts)
          require('kanagawa').setup(opts)
          vim.cmd[[colorscheme kanagawa]]
@@ -44,7 +32,7 @@ return {
    },
    {
       'folke/tokyonight.nvim',
-      lazy = false,
+      lazy = true,
       priority = 1000,
       opts = {
          on_colors = function(colors)
@@ -60,20 +48,21 @@ return {
          vim.cmd[[colorscheme tokyonight]]
       end,
    },
-   { 'morhetz/gruvbox' },
-   { 'rose-pine/neovim' },
-   { 'catppuccin/nvim' },
-   { 'savq/melange-nvim' },
+   { 'rose-pine/neovim', lazy=true},
+   { 'catppuccin/nvim', lazy=true},
+   { 'savq/melange-nvim', lazy=true},
    {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
+      -- event = 'BufReadPre',
       event = 'VeryLazy',
       opts = {
          options = {
-            theme = 'auto',
+            theme = 'kanagawa',
          },
       },
    },
+   { 'junegunn/vim-easy-align', }
    -- {
    --    'folke/noice.nvim',
    --    dependencies = {
@@ -91,34 +80,29 @@ return {
    --       -- },
    --    },
    -- },
-   {
-      'lukas-reineke/indent-blankline.nvim',
-      main = 'ibl',
-      event = { 'BufReadPre', 'BufNewFile' },
-   },
 
-   {
-      'HiPhish/rainbow-delimiters.nvim',
-      ft = { 'tex' },
-      config = function()
-         local rd = require('rainbow-delimiters')
-         vim.g.rainbow_delimiters = {
-            strategy = {
-               latex = rd.strategy['local'],
-            },
-            query = {
-               ['']  = 'rainbow-delimiters',
-            },
-            highlight = {
-               'RainbowDelimiterRed',
-               'RainbowDelimiterYellow',
-               'RainbowDelimiterBlue',
-               'RainbowDelimiterOrange',
-               'RainbowDelimiterGreen',
-               'RainbowDelimiterViolet',
-               'RainbowDelimiterCyan',
-            },
-         }
-      end,
-   }
+   -- {
+   --    'HiPhish/rainbow-delimiters.nvim',
+   --    ft = { 'tex' },
+   --    config = function()
+   --       local rd = require('rainbow-delimiters')
+   --       vim.g.rainbow_delimiters = {
+   --          strategy = {
+   --             latex = rd.strategy['local'],
+   --          },
+   --          query = {
+   --             ['']  = 'rainbow-delimiters',
+   --          },
+   --          highlight = {
+   --             'RainbowDelimiterRed',
+   --             'RainbowDelimiterYellow',
+   --             'RainbowDelimiterBlue',
+   --             'RainbowDelimiterOrange',
+   --             'RainbowDelimiterGreen',
+   --             'RainbowDelimiterViolet',
+   --             'RainbowDelimiterCyan',
+   --          },
+   --       }
+   --    end,
+   -- }
 }

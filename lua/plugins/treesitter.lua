@@ -30,6 +30,7 @@ return {
             'regex',
             'python',
             'latex',
+            'cpp',
          },
          incremental_selection = {
             enable = true,

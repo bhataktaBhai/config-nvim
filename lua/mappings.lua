@@ -26,6 +26,7 @@ nmap('<Right>', '<C-w>l', opts)
 -- move to front and end of line
 nmap('H', '^', opts)
 nmap('L', '$', opts)
+nmap('gL', 'g$', opts)
 -- delete from end of line
 -- nmap('X', '$x', opts)
 

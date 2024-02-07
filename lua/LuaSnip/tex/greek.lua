@@ -71,7 +71,7 @@ for english, greek in pairs(english_to_greek) do
          common = {
             name = '\\' .. upper_greek,
             dscr = 'uppercase ' .. greek,
-            cond = -tex.in_label,
+            -- cond = -tex.in_label,
          },
          { trig = ';' .. upper_english },
          { trig = ':' .. upper_english },

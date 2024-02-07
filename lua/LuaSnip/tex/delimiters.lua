@@ -9,25 +9,25 @@ local vn = require('LuaSnip.util').visual_node
 
 local autosnippets = {
    -- autopairing
-   tex.ms(
-      '(',
-      { t'(', vn(), i(1), t')' }
-   ),
-   tex.ms(
-      '[',
-      { t'[', vn(), i(1), t']' }
-   ),
-   tex.ms(
-      '{',
-      { t'{', vn(), i(1), t'}' }
-   ),
-   s(
-      {
-         trig = '\\{',
-         priority = 10000, -- to override `{`
-      },
-      { t'\\{', vn(), i(1), t'\\}' }
-   ),
+   -- tex.ms(
+   --    '(',
+   --    { t'(', vn(), i(1), t')' }
+   -- ),
+   -- tex.ms(
+   --    '[',
+   --    { t'[', vn(), i(1), t']' }
+   -- ),
+   -- tex.ms(
+   --    '{',
+   --    { t'{', vn(), i(1), t'}' }
+   -- ),
+   -- s(
+   --    {
+   --       trig = '\\{',
+   --       priority = 10000, -- to override `{`
+   --    },
+   --    { t'\\{', vn(), i(1), t'\\}' }
+   -- ),
    -- dynamic delimiters
    tex.ms(
       'ddp',

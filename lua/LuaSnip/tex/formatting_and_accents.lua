@@ -49,14 +49,14 @@ local autosnippets = {
       },
       fmta('\\texttt{<><>}', { vn(), i(1) })
    ),
-   tex.ms(
-      {
-         trig = 'bb',
-         name = '\\mathbb{}',
-         dscr = 'blackboard bold math mode',
-      },
-      fmta('\\mathbb{<><>}', { vn(), i(1) })
-   ),
+   -- tex.ms(
+   --    {
+   --       trig = 'bb',
+   --       name = '\\mathbb{}',
+   --       dscr = 'blackboard bold math mode',
+   --    },
+   --    fmta('\\mathbb{<><>}', { vn(), i(1) })
+   -- ),
    tex.ms(
       {
          trig = 'mcl',
@@ -143,8 +143,8 @@ local autosnippets = {
    tex.ms(
       {
          trig = '([\\a-zA-Z]+)hat',
-         name = 'postfix hat',
-         dscr = 'postfix hat',
+         name = 'postfix widehat',
+         dscr = 'postfix widehat',
          trigEngine = 'pattern',
          priority = 10000,
          condition = tex.in_mathzone,
@@ -152,16 +152,16 @@ local autosnippets = {
             -- but \alphahat should trigger
       },
       f(function(_, snip)
-         return '\\hat{' .. snip.captures[1] .. '}'
+         return '\\what{' .. snip.captures[1] .. '}'
       end)
    ),
    tex.ms(
       {
          trig = 'hat',
-         name = 'prefix hat',
-         dscr = 'prefix hat',
+         name = 'prefix widehat',
+         dscr = 'prefix widehat',
       },
-      fmta('\\hat{<><>}', { vn(), i(1) })
+      fmta('\\what{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {
@@ -237,7 +237,7 @@ local autosnippets = {
          condition = tex.in_mathzone,
       },
       f(function(_, snip)
-         return '\\overline{' .. snip.captures[1] .. '}'
+         return '\\wbar{' .. snip.captures[1] .. '}'
       end)
    ),
    tex.ms(
@@ -246,7 +246,7 @@ local autosnippets = {
          name = 'prefix overline',
          dscr = 'prefix overline',
       },
-      fmta('\\overline{<><>}', { vn(), i(1) })
+      fmta('\\wbar{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       {

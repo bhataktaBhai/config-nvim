@@ -27,3 +27,25 @@ vim.api.nvim_create_autocmd('InsertLeave', {
 
 -- experimental
 -- set.cmdheight = 0
+
+vim.opt.list = true
+vim.opt.listchars = {
+   -- tab = "  │",--"| ",
+   trail = "·",
+   precedes = "…",
+   extends = "…",
+   -- space = "·",
+   tab = "<->",
+   nbsp = "␣",
+   -- leadmultispace = "│  ",
+}
+local function update_lead()
+   local lead = '│'
+   local tabbing = vim.bo.softtabstop > 0 and vim.bo.softtabstop or vim.bo.tabstop
+   for _ = 1, tabbing - 1 do
+      lead = lead .. ' '
+   end
+   vim.opt_local.listchars:append({ leadmultispace = lead })
+end
+vim.api.nvim_create_autocmd("OptionSet", { pattern = { "listchars", "tabstop", "filetype" }, callback = update_lead })
+vim.api.nvim_create_autocmd("VimEnter", { callback = update_lead, once = true })

@@ -164,18 +164,16 @@ autosnippets = util.extend(autosnippets, {
    ),
    tex.ts(
       {
-         trig = "([^%a'$%.])([b-zB-HJ-Z])([^%a'$])",
+         trig = "([^\\(%a'$%.])([b-zB-HJ-Z])([^%a)'$])",
          dscr = 'auto mathmode for one-letter variables',
          trigEngine = 'pattern',
          wordTrig = false,
+         condition = -tex.in_label,
       },
       f(function (_, snip)
          return snip.captures[1] .. '$' .. snip.captures[2] .. '$' .. snip.captures[3]
       end)
    ),
-   -- To not trigger mathmode
-   tex.ts('ie', t('\\textit{i.e.}')),
-   tex.ts('eg', t('\\textit{e.g.}')),
    s(
       {
          trig = 'dm',
@@ -185,9 +183,9 @@ autosnippets = util.extend(autosnippets, {
          [[
             \[
                 <><>
-            \]<>
+            \]
          ]],
-         { vn(), i(1), i(0) }
+         { vn(), i(0) }
       )
    ),
    ms(

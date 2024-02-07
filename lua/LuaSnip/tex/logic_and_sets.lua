@@ -204,10 +204,10 @@ local autosnippets = {
    tex.ms(
       {
          trig = 'fn',
-         name = 'f : A \\to B',
+         name = 'f: A → B',
          dscr = 'function declaration',
       },
-      fmta('<> : <> \\to <>', {
+      fmta('<>\\colon <> \\to <>', {
          i(1, 'f'),
          i(2, '\\R'),
          i(3, '\\R'),
