@@ -73,8 +73,8 @@ local autosnippets = {
          dscr = 'limit',
       },
       fmta('\\lim_{<> \\to <>} <>', {
-         i(1, 'x'),
-         i(2, 'a'),
+         i(1, 'n'),
+         i(2, '\\infty'),
          -- d(3, function (args)
          --    return sn(1, { i(1, 'f(' .. args[1][1] .. ')') })
          -- end, 1),

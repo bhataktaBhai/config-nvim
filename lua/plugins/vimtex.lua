@@ -15,13 +15,24 @@ return {
          let.tex_flavor = 'latex'
          let.vimtex_quickfix_mode = 0
          -- deprecated on 2021-10-25, see :h g:vimtex_compiler_progname
-         -- let.vimtex_compiler_progname = 'pdflatex' 
+         let.vimtex_compiler_progname = 'latexmk'
          let.tex_conceal = 'abdmg'
          let.vimtex_syntax_conceal = { sections = 1 }
 
          let.vimtex_view_method = 'skim'
          let.vimtex_view_skim_activate = 1
          let.vimtex_view_skim_sync = 1
+
+         let.vimtex_compiler_latexmk = {
+            options = {
+               '-verbose',
+               '-pdf',
+               '-file-line-error',
+               '-synctex=1',
+               '-interaction=nonstopmode',
+               '-shell-escape',
+            },
+         }
 
          let.vimtex_imaps_enabled = 0
 
@@ -30,6 +41,9 @@ return {
             comments = { enabled = 1 },
          }
          let.vimtex_indent_lists = {}
+         let.vimtex_indent_on_ampersands = false
+         let.vimtex_indent_tikz_commands = false
+         let.vimtex_indent_delims = { open = {}, close = {} }
 
          local math_toggle = {}
          math_toggle['$'] = '\\['
@@ -83,10 +97,13 @@ return {
             { name = 'gcd',   conceal     = true, mathmode =  true                    },
             { name = 'bm',    conceal     = true, mathmode =  true, argstyle = 'bold' },
             { name = 'concat',concealchar = '⧺',  mathmode =  true,                   },
-            { name = 'Var',   conceal     = true,                   argstyle = 'ital' },
-            { name = 'Var',   conceal     = true, mathmode =  true, argstyle = 'ital' },
+            { name = 'Varr',  conceal     = true,                   argstyle = 'ital' },
+            { name = 'Varr',  conceal     = true, mathmode =  true, argstyle = 'ital' },
             -- { name = 'State', conceal     = true, mathmode = false                    },
             { name = 'checkmark', concealchar = '✓' },
+            { name = 'leadsto'  , concealchar = '⇝', mathmode = true },
+            { name = 'coloneq'  , concealchar = '≔', mathmode = true },
+            { name = 'eqcolon'  , concealchar = '≕', mathmode = true },
          }
          for _, v in ipairs(math_and_text) do
             local v_copy = vim.deepcopy(v)

@@ -15,11 +15,11 @@
 -- })
 --
 -- vim.cmd[[colorscheme tokyonight-moon]]
-local opts = {
+local kanagawa_opts = {
    -- statementStyle = { bold = false },
    overrides = function (colors)
       local math_mode = { fg = colors.palette.lotusBlue2, bold = false }
-      local nonbold   = { fg = colors.palette.oniViolet, bold = false }
+      local nonbold   = { fg = colors.palette.oniViolet,  bold = false }
       return {
          texMathZone = math_mode,
          texMathDelimZone = math_mode,
@@ -31,8 +31,9 @@ local opts = {
       }
    end,
 }
-require('kanagawa').setup(opts)
-vim.cmd[[colorscheme kanagawa]]
+-- require('kanagawa').setup(kanagawa_opts)
+-- vim.cmd[[colorscheme kanagawa]]
+vim.cmd[[colorscheme catppuccin-latte]]
 
 require('lualine').setup({
    options = {

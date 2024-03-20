@@ -238,6 +238,15 @@ local autosnippets = {
       fmta('\\binom{<>}{<>}', { i(1, 'n'), i(2, 'r') })
    ),
    tex.ms('gv', t('\\given')),
+   tex.ms(
+      {
+         trig = 'if',
+         name = '\\text{if }',
+         dscr = 'if',
+         cond = tex.in_env('cases'),
+      },
+      t('\\text{if }')
+   )
 }
 
 return {}, autosnippets

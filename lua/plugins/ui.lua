@@ -48,9 +48,9 @@ return {
          vim.cmd[[colorscheme tokyonight]]
       end,
    },
-   { 'rose-pine/neovim', lazy=true},
-   { 'catppuccin/nvim', lazy=true},
-   { 'savq/melange-nvim', lazy=true},
+   { 'rose-pine/neovim', lazy=true },
+   { 'catppuccin/nvim', lazy=false },
+   { 'savq/melange-nvim', lazy=true },
    {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
