@@ -31,13 +31,21 @@ local kanagawa_opts = {
       }
    end,
 }
--- require('kanagawa').setup(kanagawa_opts)
--- vim.cmd[[colorscheme kanagawa]]
-vim.cmd[[colorscheme catppuccin-latte]]
+require('kanagawa').setup(kanagawa_opts)
+vim.cmd[[colorscheme kanagawa]]
+-- vim.cmd[[
+--    set bg=light
+--    augroup toast
+--       autocmd colorscheme toast hi clear texMathZone | hi link texMathZone texMathOper
+--       autocmd colorscheme toast hi clear Conceal | hi link Conceal texMathOper
+--       autocmd colorscheme toast :hi normal guibg=#ffffff
+--    augroup END
+--    colorscheme toast
+-- ]]
 
 require('lualine').setup({
    options = {
-      theme = 'kanagawa',
+      theme = 'auto',
    },
    -- sections = {
    --    lualine_x = {'encoding', 'fileformat', function()

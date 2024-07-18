@@ -34,6 +34,14 @@ return {
                },
             },
             leanls = {},
+            pyright = {},
+            html = {},
+            cssls = {},
+            -- jsonls = {},
+            tsserver = {},
+            jdtls = {},
+            hls = {},
+            rust_analyzer = {},
          },
          global_keymap = {
             ['<leader>d'] = { vim.diagnostic.open_float, 'open diagnostics' },
@@ -46,7 +54,7 @@ return {
             ['<C-k>'] = { vim.lsp.buf.signature_help, 'show signature help' },
             gT = { vim.lsp.buf.type_definition, 'go to type definition' },
             ['<leader>r'] = { vim.lsp.buf.rename, 'rename' },
-            ['<leader>a'] = vim.lsp.buf.code_action,
+            ['<leader>a'] = { vim.lsp.buf.code_action, 'code action' },
             gr = { vim.lsp.buf.references, 'show references' },
             ['<leader>f'] = {
                function() vim.lsp.buf.format { async = true } end,
@@ -77,7 +85,7 @@ return {
                vim.keymap.set('n', k, v[1], {
                   silent = true, remap = true,
                   buffer = bufnr,
-                  desc = v[2]
+                  desc = v[2],
                })
             end
          end
@@ -101,12 +109,12 @@ return {
          require('mason-lspconfig').setup({ ensure_installed = server_names, handlers = { default_handler } })
       end,
    },
-   {
-      'jose-elias-alvarez/null-ls.nvim',
-      event = { 'BufReadPre', 'BufNewFile' },
-      dependencies = { 'mason.nvim' },
-      config = true,
-   },
+   -- {
+   --    'jose-elias-alvarez/null-ls.nvim',
+   --    event = { 'BufReadPre', 'BufNewFile' },
+   --    dependencies = { 'mason.nvim' },
+   --    config = true,
+   -- },
    {
       'williamboman/mason.nvim',
       build = ':MasonUpdate',

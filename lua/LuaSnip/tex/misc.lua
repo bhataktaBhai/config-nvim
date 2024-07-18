@@ -33,6 +33,8 @@ local autosnippets = {
       })
    ),
    tex.ms('ii', t'^{(i)}'),
+   tex.ts('nnn', t'$n \\in \\N$'),
+   tex.ms('nnn', t'n \\in \\N'),
 }
 
 return {}, autosnippets

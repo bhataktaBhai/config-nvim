@@ -35,7 +35,9 @@ return {
             },
             sources = {
                { name = 'nvim_lsp' },
-               { name = 'omni' },
+               -- { name = 'omni' },   -- I don't know if it is useful.
+                                       -- It is also cause for the SQL Error below
+                                       -- SQLComplete:The dbext plugin must be loaded for dynamic SQL completion
                { name = 'luasnip' },
                { name = 'buffer' },
             },
@@ -96,7 +98,7 @@ return {
    },
    {
       'zbirenbaum/copilot.lua',
-      commit = '406f148',
+      -- commit = '406f148',
       build = ':Copilot auth',
       cmd = 'Copilot',
       event = 'InsertEnter',
@@ -105,10 +107,10 @@ return {
             auto_trigger = true,
             keymap = {
                accept = '<C-j>',
-               accept_word = '<C-l>',
+               accept_word = '<C-;>',
                next = '<M-j>',
                prev = '<M-k>',
-               dismiss = '<C-k>',
+               -- dismiss = '<C-k>',
             },
          },
       },

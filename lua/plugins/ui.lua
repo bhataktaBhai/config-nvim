@@ -49,8 +49,37 @@ return {
       end,
    },
    { 'rose-pine/neovim', lazy=true },
-   { 'catppuccin/nvim', lazy=false },
+   { 'catppuccin/nvim', lazy=true },
    { 'savq/melange-nvim', lazy=true },
+   { 'sainnhe/gruvbox-material', lazy=true,
+      config = function()
+         vim.cmd[[
+            " Important!!
+            if has('termguicolors')
+              set termguicolors
+            endif
+
+            " For dark version.
+            set background=dark
+
+            " For light version.
+            set background=light
+
+            " Set contrast.
+            " This configuration option should be placed before `colorscheme gruvbox-material`.
+            " Available values: 'hard', 'medium'(default), 'soft'
+            let g:gruvbox_material_background = 'soft'
+
+            " For better performance
+            let g:gruvbox_material_better_performance = 1
+
+            colorscheme gruvbox-material
+        ]]
+      end,
+   },
+   -- papercolor
+   { 'NLKNguyen/papercolor-theme', lazy=true },
+   { 'jsit/toast.vim', lazy=true },
    {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -60,6 +89,14 @@ return {
          options = {
             theme = 'kanagawa',
          },
+      },
+   },
+   {
+      'lukas-reineke/indent-blankline.nvim',
+      enabled = false,
+      main = 'ibl',
+      opts = {
+         indent = { highlight = { 'Comment' } },
       },
    },
    { 'junegunn/vim-easy-align', }

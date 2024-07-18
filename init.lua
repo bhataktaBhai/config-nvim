@@ -1,5 +1,6 @@
 require('settings')
 require('mappings')
+require('iisc_mappings')
 
 require('lazy_bootstrap').install()
 require('lazy').setup('plugins', {

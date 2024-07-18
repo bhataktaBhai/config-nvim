@@ -14,8 +14,8 @@ local function cmap(lhs, rhs, opt)
    map('c', lhs, rhs, opt)
 end
 
-nmap('<leader>', '<Nop>', opts)
-nmap('<localleader>', '<Nop>', opts)
+-- nmap('<leader>', '<Nop>', opts)
+-- nmap('<localleader>', '<Nop>', opts)
 
 -- move between windows
 nmap('<Up>', '<C-w>k', opts)

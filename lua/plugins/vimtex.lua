@@ -104,6 +104,7 @@ return {
             { name = 'leadsto'  , concealchar = '⇝', mathmode = true },
             { name = 'coloneq'  , concealchar = '≔', mathmode = true },
             { name = 'eqcolon'  , concealchar = '≕', mathmode = true },
+            { name = 'unifto'   , concealchar = '⥤', mathmode = true },
          }
          for _, v in ipairs(math_and_text) do
             local v_copy = vim.deepcopy(v)
