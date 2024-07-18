@@ -11,11 +11,11 @@ return {
          diagnostic = {
             virtual_text = false,
             severity_sort = true,
-            icons = {
-               Error = ' ',
-               Warn = ' ',
-               Hint = ' ',
-               Info = ' ',
+            text = {
+               [vim.diagnostic.severity.ERROR] = ' ',
+               [vim.diagnostic.severity.WARN]  = ' ',
+               [vim.diagnostic.severity.HINT]  = ' ',
+               [vim.diagnostic.severity.INFO]  = ' ',
             },
          },
          servers = {
@@ -69,9 +69,8 @@ return {
          vim.opt.signcolumn = 'number'
          vim.diagnostic.config(opts.diagnostic or {})
 
-         for name, icon in pairs(opts.diagnostic and opts.diagnostic.icons or {}) do
-            name = 'DiagnosticSign' .. name
-            vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
+         if vim.fn.has('nvim-0.10') == 1 then
+            vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
          end
 
          for k, v in pairs(opts.global_keymap or {}) do
