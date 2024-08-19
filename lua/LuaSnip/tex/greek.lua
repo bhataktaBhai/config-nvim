@@ -4,12 +4,14 @@ local ms = ls.multi_snippet
 
 local tex = require('LuaSnip.tex.util')
 
+-- notice that nu and rho make multiple appearances.
+-- pi is missing but is so special it gets its own snippet later
 local english_to_greek = {
    a = 'alpha',
    b = 'beta',
    c = 'chi',
    d = 'delta',
-   e = 'varepsilon',
+   e = 'eps',
    f = 'phi',
    g = 'gamma',
    h = 'eta',
@@ -19,21 +21,32 @@ local english_to_greek = {
    l = 'lambda',
    m = 'mu',
    n = 'nu',
-   o = 'omega', -- w goes to psi
-   p = 'rho', -- looks like a p
-   q = 'theta', -- uppercase Q sorta theta?
+   o = 'omega',   -- w goes to psi
+   p = 'rho',     -- looks like a p
+   q = 'theta',   -- uppercase Q sorta theta?
    r = 'rho',
    s = 'sigma',
    t = 'tau',
    u = 'mu',
    v = 'nu',
-   w = 'psi', -- looks like a w
+   w = 'psi',     -- looks like a w
    x = 'xi',
    y = 'upsilon',
    z = 'zeta',
 }
 
-local autosnippets = {}
+-- make pi go to \\pi automatically
+-- "pi" is short enough, even easier that ";p"
+local autosnippets = {
+   tex.ms(
+      {
+         trig = 'pi',
+         name = '\\pi',
+         dscr = 'lowercase pi',
+      },
+      t('\\pi')
+   )
+}
 
 for english, greek in pairs(english_to_greek) do
    autosnippets[#autosnippets+1] = tex.ms(

@@ -48,7 +48,7 @@ local function update_lead()
    vim.opt_local.listchars:append({ leadmultispace = lead })
 end
 vim.api.nvim_create_autocmd("OptionSet", { pattern = { "listchars", "tabstop", "filetype" }, callback = update_lead })
-vim.api.nvim_create_autocmd("VimEnter", { callback = update_lead, once = true })
+vim.api.nvim_create_autocmd("BufEnter", { callback = update_lead })
 
 -- filename suggestions
 -- set.wildmode = {'longest', 'full', 'list'}

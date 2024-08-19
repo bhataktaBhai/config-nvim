@@ -45,7 +45,7 @@ local function label_text (argnodes, _, _, label_header)
    if argnodes[1][1] ~= '' then
       node = sn(1, { -- jump_index = 1 for surround_if_nonempty
          i(1),
-         i(2, argnodes[1][1]:gsub(' ', '_'):lower()),
+         i(2, argnodes[1][1]:gsub(' ', '-'):lower()),
       })
    else
       node = i(1)

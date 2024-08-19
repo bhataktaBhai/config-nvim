@@ -89,6 +89,7 @@ return {
             { name = 'Q',   concealchar = 'ℚ' },
             { name = 'C',   concealchar = 'ℂ' },
             { name = 'O',   concealchar = '∅' },
+            { name = 'eps', concealchar = 'ε' },
          }
          local custom_cmds = {
             { name = 'L',     concealchar = 'ℒ',  mathmode =  true                    },
