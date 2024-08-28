@@ -49,17 +49,3 @@ local function update_lead()
 end
 vim.api.nvim_create_autocmd("OptionSet", { pattern = { "listchars", "tabstop", "filetype" }, callback = update_lead })
 vim.api.nvim_create_autocmd("BufEnter", { callback = update_lead })
-
--- filename suggestions
--- set.wildmode = {'longest', 'full', 'list'}
--- set.wildmenu = true
-
-set.wildignore = {
-   '*.o', '*.out', '*.obj', '*.pyc', '*.class',
-   '*.swp',
-   '*.pdf', '*.png', '*.jpg', '*.jpeg', '*.gif', '*.bmp', '*.tiff', '*.ico',
-   '*.fbd', '*.fdb_latexmk', '*.fls', '*.aux', '*.log', '*.synctex.gz', '*.synctex.gz(busy)', '*.toc',
-   '*.hw', '*.lec', -- custom lists in LaTeX
-   '*.dvi', '*.ps', '*.eps', '*.pdfsync',
-   '.DS_Store', '.git', '.hg', '.svn', '.bzr',
-}

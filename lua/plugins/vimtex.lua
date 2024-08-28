@@ -100,6 +100,7 @@ return {
             { name = 'concat',concealchar = '⧺',  mathmode =  true,                   },
             { name = 'Varr',  conceal     = true,                   argstyle = 'ital' },
             { name = 'Varr',  conceal     = true, mathmode =  true, argstyle = 'ital' },
+            -- { name = 'ab',    conceal     = true, mathmode =  true },
             -- { name = 'State', conceal     = true, mathmode = false                    },
             { name = 'checkmark', concealchar = '✓' },
             { name = 'leadsto'  , concealchar = '⇝', mathmode = true },

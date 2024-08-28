@@ -174,6 +174,13 @@ autosnippets = util.extend(autosnippets, {
          return snip.captures[1] .. '$' .. snip.captures[2] .. '$' .. snip.captures[3]
       end)
    ),
+   tex.ts(
+      {
+         trig = "$ =",
+         dscr = 'auto mathmode for =',
+      },
+      fmta('= <>$<>', { i(1), i(0) })
+   ),
    s(
       {
          trig = 'dm',

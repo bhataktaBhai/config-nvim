@@ -47,15 +47,8 @@ local autosnippets = {
       fmta('\\angled{<><>}', { vn(), i(1) })
    ),
    tex.ms(
-      '|',
-      fmta('\\abs{<><>}', { vn(), i(1) })
-   ),
-   tex.ms(
-      {
-         trig = '\\abs{|',
-         priority = 10000, -- to override `|`
-      },
-      t('\\norm{')
+      '||',
+      fmta('\\norm{<><>}', { vn(), i(1) })
    ),
    tex.ms(
       'md',
